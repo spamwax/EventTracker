@@ -1,7 +1,7 @@
-## Interface: 70000
+## Interface: 90001
 ## Title: EventTracker
-## Version: 2.9
-## Author: fmeus
+## Version: 3.0
+## Author: fmeus (modified by spamwax)
 ## Notes: Event Tracker allows you to view detailed information on events/functions tracked
 ## DefaultState: enabled
 ## SavedVariables: ET_Data
