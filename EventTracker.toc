@@ -1,0 +1,14 @@
+## Interface: 70000
+## Title: EventTracker
+## Version: 2.9
+## Author: fmeus
+## Notes: Event Tracker allows you to view detailed information on events/functions tracked
+## DefaultState: enabled
+## SavedVariables: ET_Data
+
+EventTracker_globals.lua
+EventTracker_events.lua
+EventTracker_static.lua
+EventTracker_en.lua
+EventTracker.lua
+EventTracker.xml
