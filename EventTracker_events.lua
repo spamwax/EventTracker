@@ -5,11 +5,14 @@
 
 -- Events to be tracked
     ET_TRACKED_EVENTS = {
+        "PLAYER_STARTED_MOVING",
+        --@debug@
         "COMBAT_LOG_EVENT_UNFILTERED"
-        --"UPDATE_MOUSEOVER_UNIT",
+        --@end-debug
+        -- "UPDATE_MOUSEOVER_UNIT",
         -- "UNIT_COMBAT",
-        --"CHAT_MSG_GUILD",
-        --"PLAYERREAGENTBANKSLOTS_CHANGED",
+        -- "CHAT_MSG_GUILD",
+        -- "PLAYERREAGENTBANKSLOTS_CHANGED",
     };
 
 -- Events to be ignored (applied when using /registerall)
