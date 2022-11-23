@@ -1,6 +1,6 @@
 ## Event Tracker
 
-Using this addon you can view detailed information about the **events** are triggered by the game.
+Using this addon you can view detailed information about the **events** that are triggered by the game.
 
 Detailed information such as arguments of the event's payload for the tracked events/functions are displayed. You can also see which frames are monitoring specific events.
 
@@ -9,7 +9,7 @@ You can also track function calls to see time spent during the execution of the 
 
 You have two options to track  standard WoW events
 
-1. Update the file `EventTracker_events.lua yourself`. The following is an example of how the contents of the file may look like.
+1. Update the file `EventTracker_events.lua` yourself. The following is an example of how the contents of the file may look like.
 
 ```lua
 -- Events to be tracked
@@ -53,5 +53,6 @@ The following slash commands are available:
 
 ### Notice
 
-This project was abandoned since 2009 and I just took over it. My goal is to keep it working under `retail` version.
+This project was abandoned since 2016 and I just took over it. My goal is to keep it working under `retail` version.
+
 If you have issues with under clients (such as WOTLK), please submit a PR on [github issues](https://github.com/spamwax/EventTracker).
