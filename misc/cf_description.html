@@ -1,0 +1,74 @@
+<h3 id="event-tracker">Event Tracker</h3>
+<p>Using this addon you can view detailed information about the <strong>events</strong> are triggered by the game.</p>
+<p>Detailed information such as arguments of the event's payload for the tracked events/functions are displayed. You can
+    also see which frames are monitoring specific events.</p>
+<p>You can also track function calls to see time spent during the execution of the function (on a call per call base as
+    well as the total execution time).</p>
+<p>You have two options to track standard WoW events</p>
+<ul>
+    <li>Update the file <code>EventTracker_events.lua yourself</code>. The following is an example of how the contents
+        of the file may look like.</li>
+</ul>
+<pre><code>-- Events to be tracked <br />ET_TRACKED_EVENTS = {<br />  &nbsp;"PLAYER_LEVEL_UP",<br />&nbsp;"PLAYER_XP_UPDATE",<br />&nbsp;"UNIT_HEALTH"<br />};<br />-- Events to be ignored (applied when using /et registerall) <br />ET_IGNORED_EVENTS = {<br />&nbsp;"BAG_UPDATE_COOLDOWN",<br />&nbsp;"ACTIONBAR_UPDATE_COOLDOWN",<br />&nbsp;"UNIT_POWER_FREQUENT",<br />} <br /></code></pre>
+<p>&nbsp;</p>
+<ul>
+    <li>Add an even using the in-game slash command <code>/et add &lt;event&gt;</code>. Events added this way will not
+        persist between log-in sessions.</li>
+</ul>
+<h5 id="be-careful-to-specify-only-valid-events">Be careful to specify only valid events.</h5>
+<p>Event Tracker uses the function <code>GetFramesRegisteredForEvent()</code>, which will cause WoW to hard crash when
+    it is being called with a non-existing event.</p>
+<h3 id="slash-commands">Slash commands</h3>
+<p>The following slash commands are available:</p>
+<table>
+    <thead>
+        <tr>
+            <th><strong>Command</strong></th>
+            <th><strong>Description</strong></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>/et open</code> or <code>/et close</code></td>
+            <td>Show/hide EventTracker window</td>
+        </tr>
+        <tr>
+            <td><code>/et ?</code> or <code>/et help</code></td>
+            <td>Show this list of commands</td>
+        </tr>
+        <tr>
+            <td><code>/et add &lt;event&gt;</code></td>
+            <td>Add event to be tracked</td>
+        </tr>
+        <tr>
+            <td><code>/et remove &lt;event&gt;</code></td>
+            <td>Remove event to be tracked</td>
+        </tr>
+        <tr>
+            <td><code>/et registerall</code></td>
+            <td>Register all events to be tracked (# of events not known)</td>
+        </tr>
+        <tr>
+            <td><code>/et unregisterall</code></td>
+            <td>Unregister all events to be tracked (except for VARIABLES_LOADED)</td>
+        </tr>
+        <tr>
+            <td><code>/et resetpos</code></td>
+            <td>Reset position of the main EventTracker frame</td>
+        </tr>
+        <tr>
+            <td><code>/et filter</code></td>
+            <td>Adds a filter to showed events (sub-string search, no regexp) - Requires registerall to be active</td>
+        </tr>
+        <tr>
+            <td><code>/et removefilter</code></td>
+            <td>Remove filter</td>
+        </tr>
+    </tbody>
+</table>
+<p>&nbsp;</p>
+<h4>Notice</h4>
+<p>This project was abandoned since 2009 and I just took over it. My goal is to keep it working under
+    <code>retail</code> version. If you have issues with under clients (such as WOTLK),
+    please submit a PR on <a href="https://github.com/spamwax/EventTracker">github page</a>.
+</p>

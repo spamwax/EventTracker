@@ -2,10 +2,14 @@
 ## Title: EventTracker
 ## Version: @project-version@
 ## Author: fmeus (Update by spamwax for SL/DF)
-## Notes: Event Tracker allows you to view detailed information on events/functions tracked
+## Notes: Event Tracker allows you to view detailed information about events/functions
 ## DefaultState: enabled
 ## SavedVariables: ET_Data
 ## X-Wago-ID: RqGYYjGg
+## X-Curse-Project-Name: EventTracker
+## X-Curse-Project-ID: 19649
+## X-Website: https://github.com/spamwax/EventTracker
+## X-Category: Development Tools
 
 EventTracker_globals.lua
 EventTracker_events.lua
