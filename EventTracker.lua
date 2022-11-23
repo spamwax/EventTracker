@@ -169,7 +169,9 @@
 
         if (event == "COMBAT_LOG_EVENT_UNFILTERED" or event == "COMBAT_LOG_EVENT") then
             data = { CombatLogGetCurrentEventInfo() }
+            --@debug@
             DevTools_Dump(data)
+            --@end-debug@
         end
 
         tinsert( ET_EventDetail, { event, time(), data, realevent, time_usage, call_stack } );
