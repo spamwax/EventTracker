@@ -242,7 +242,7 @@
             argName = index;
         end;
 
-        argData = tostring( value or ET_NIL );
+        argData = tostring( value == nil and ET_NIL or tostring(value) );
 
         return C_BLUE..argName..C_CLOSE, C_YELLOW..argData..C_CLOSE;
     end;
