@@ -213,9 +213,10 @@ globals = {
     "EventTracker_EventOnClick",
     "GetFramesRegisteredForEvent",
     "Event_Frame_FrameHeading",
-    "",
-    "",
-    "",
+    "ET_PURGE_BUTTON",
+    "ET_CLOSE_BUTTON",
+    "ET_STATE_ONOFF",
+    "ET_ARGUMENTS_TEXT",
 
     "ET_UNNAMED_FRAME",
     "ET_EVENT_COUNT",
