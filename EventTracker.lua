@@ -165,6 +165,12 @@
         if ( time_usage ) then
             ET_Events[event].time = ( ET_Events[event].time or 0 ) + time_usage;
         end;
+
+        if (event == "COMBAT_LOG_EVENT_UNFILTERED" or event == "COMBAT_LOG_EVENT") then
+            data = { CombatLogGetCurrentEventInfo() }
+            DevTools_Dump(data)
+        end
+
         tinsert( ET_EventDetail, { event, time(), data, realevent, time_usage, call_stack } );
 
         -- Update frame

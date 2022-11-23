@@ -14,11 +14,12 @@
     </Frame>
 
 <!-- Dialog template -->
-    <Frame name="EventTracker_Dialog" hidden="true" virtual="true" frameStrata="DIALOG" parent="UIParent">
+    <Frame name="EventTracker_Dialog" hidden="true" virtual="true" frameStrata="DIALOG" parent="UIParent" inherits="BackdropTemplate">
         <Size>
             <AbsDimension x="700" y="410"/>
         </Size>
-        <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+        <!-- See https://wowpedia.fandom.com/wiki/BackdropTemplate and https://www.townlong-yak.com/framexml/live/Backdrop.lua -->
+        <!-- <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
             <BackgroundInsets>
                 <AbsInset left="11" right="12" top="12" bottom="11"/>
             </BackgroundInsets>
@@ -28,7 +29,7 @@
             <EdgeSize>
                 <AbsValue val="32"/>
             </EdgeSize>
-        </Backdrop>
+        </Backdrop> -->
         <Anchors>
             <Anchor point="CENTER"/>
         </Anchors>
@@ -53,7 +54,7 @@
                                 </Anchor>
                             </Anchors>
                             <Size>
-                                <AbsDimension x="200" y="12"/>
+                                <AbsDimension x="150" y="12"/>
                             </Size>
                         </FontString>
                         <FontString name="$parentTimestamp" inherits="GameFontHighlightSmall" justifyH="LEFT">
@@ -63,7 +64,7 @@
                                 </Anchor>
                             </Anchors>
                             <Size>
-                                <AbsDimension x="200" y="12"/>
+                                <AbsDimension x="150" y="12"/>
                             </Size>
                         </FontString>
                         <FontString name="$parentData" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="TOP">
@@ -73,7 +74,7 @@
                                 </Anchor>
                             </Anchors>
                             <Size>
-                                <AbsDimension x="430" y="30"/>
+                                <AbsDimension x="480" y="30"/>
                             </Size>
                         </FontString>
                     </Layer>
@@ -146,7 +147,7 @@
     </Button>
 
 <!-- Main EventTracker frame -->
-    <Frame name="EventTrackerFrame" hidden="true" parent="UIParent" frameStrata="MEDIUM" inherits="EventTracker_Dialog" toplevel="true" movable="true" enbaleMouse="true">
+    <Frame name="EventTrackerFrame" hidden="true" parent="UIParent" frameStrata="MEDIUM" inherits="EventTracker_Dialog" toplevel="true" movable="true" enableMouse="true">
         <Layers>
             <Layer level="BACKGROUND">
                 <Texture name="$parentTexture">
@@ -213,7 +214,7 @@
 
         <Frames>
             <!-- Detail frame -->
-            <Frame name="EventDetailFrame" frameStrata="BACKGROUND" hidden="true">
+            <Frame name="EventDetailFrame" frameStrata="BACKGROUND" hidden="true" inherits="BackdropTemplate">
                 <Layers>
                     <Layer level="ARTWORK">
                         <!-- Heading -->
@@ -234,23 +235,12 @@
                         <Offset><AbsDimension x="-12" y="0"/></Offset>
                     </Anchor>
                 </Anchors>
-                <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
-                    <BackgroundInsets>
-                        <AbsInset left="11" right="12" top="12" bottom="11"/>
-                    </BackgroundInsets>
-                    <TileSize>
-                        <AbsValue val="32"/>
-                    </TileSize>
-                    <EdgeSize>
-                        <AbsValue val="32"/>
-                    </EdgeSize>
-                </Backdrop>
                 <Anchors>
                     <Anchor point="CENTER"/>
                 </Anchors>
                 <Frames>
                     <!-- Scroll area for argument information -->
-                    <Frame name="Event_Argument_Frame" enableMouse="true" hidden="false">
+                    <Frame name="Event_Argument_Frame" enableMouse="true" hidden="false" inherits="BackdropTemplate">
                         <Layers>
                             <Layer level="BACKGROUND">
                                 <Texture name="$parentTexture">
@@ -298,17 +288,6 @@
                                 <Offset><AbsDimension x="15" y="-50"/></Offset>
                             </Anchor>
                         </Anchors>
-                        <Backdrop  edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="false">
-                            <BackgroundInsets>
-                                <AbsInset left="5" right="5" top="5" bottom="5"/>
-                            </BackgroundInsets>
-                            <TileSize>
-                                <AbsValue val="16"/>
-                            </TileSize>
-                            <EdgeSize>
-                                <AbsValue val="16"/>
-                            </EdgeSize>
-                        </Backdrop>
                         <Frames>
                             <!-- Argument buttons -->
                             <Button name="EventArgument1" inherits="EventArgument_Template">
@@ -366,6 +345,30 @@
                                 </Anchors>
                             </Button>
                         </Frames>
+                        <!-- <Backdrop  edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="false">
+                            <BackgroundInsets>
+                                <AbsInset left="5" right="5" top="5" bottom="5"/>
+                            </BackgroundInsets>
+                            <TileSize>
+                                <AbsValue val="16"/>
+                            </TileSize>
+                            <EdgeSize>
+                                <AbsValue val="16"/>
+                            </EdgeSize>
+                        </Backdrop> -->
+                        <Scripts>
+                            <OnLoad inherit="prepend">
+                                local backdropInfo =
+                                {
+                                    edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+                                    tile = false,
+                                    tileSize = 16,
+                                    edgeSize = 16,
+                                    insets = { left = 5, right = 5, top = 5, bottom = 5 },
+                                };
+                                self:SetBackdrop(backdropInfo);
+                            </OnLoad>
+                        </Scripts>
                     </Frame>
                     <!-- Scroll buttons -->
                     <ScrollFrame name="EventTracker_Arguments" inherits="FauxScrollFrameTemplate" enableMouse="true">
@@ -385,7 +388,7 @@
                     </ScrollFrame>
 
                     <!-- Scroll area for frame information -->
-                    <Frame name="Event_Frame_Frame" enableMouse="true" hidden="false">
+                    <Frame name="Event_Frame_Frame" enableMouse="true" hidden="false" inherits="BackdropTemplate">
                         <Layers>
                             <Layer level="BACKGROUND">
                                 <Texture name="$parentTexture">
@@ -417,17 +420,6 @@
                                 <Offset><AbsDimension x="0" y="-35"/></Offset>
                             </Anchor>
                         </Anchors>
-                        <Backdrop  edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="false">
-                            <BackgroundInsets>
-                                <AbsInset left="5" right="5" top="5" bottom="5"/>
-                            </BackgroundInsets>
-                            <TileSize>
-                                <AbsValue val="16"/>
-                            </TileSize>
-                            <EdgeSize>
-                                <AbsValue val="16"/>
-                            </EdgeSize>
-                        </Backdrop>
 
                         <Frames>
                             <!-- Frame buttons -->
@@ -509,6 +501,30 @@
                             </ScrollFrame>
 
                         </Frames>
+                        <!-- <Backdrop  edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="false">
+                            <BackgroundInsets>
+                                <AbsInset left="5" right="5" top="5" bottom="5"/>
+                            </BackgroundInsets>
+                            <TileSize>
+                                <AbsValue val="16"/>
+                            </TileSize>
+                            <EdgeSize>
+                                <AbsValue val="16"/>
+                            </EdgeSize>
+                        </Backdrop> -->
+                        <Scripts>
+                            <OnLoad inherit="prepend">
+                                local backdropInfo =
+                                {
+                                    edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+                                    tile = false,
+                                    tileSize = 16,
+                                    edgeSize = 16,
+                                    insets = { left = 5, right = 5, top = 5, bottom = 5 },
+                                };
+                                self:SetBackdrop(backdropInfo);
+                            </OnLoad>
+                        </Scripts>
                     </Frame>
 
                     <!-- Scroll buttons -->
@@ -528,10 +544,35 @@
                         </Scripts>
                     </ScrollFrame>
                 </Frames>
+                <!-- <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+                    <BackgroundInsets>
+                        <AbsInset left="11" right="12" top="12" bottom="11"/>
+                    </BackgroundInsets>
+                    <TileSize>
+                        <AbsValue val="32"/>
+                    </TileSize>
+                    <EdgeSize>
+                        <AbsValue val="32"/>
+                    </EdgeSize>
+                </Backdrop> -->
+                <Scripts>
+                    <OnLoad inherit="prepend">
+                        local backdropInfo =
+                        {
+                            bgFile="Interface\\DialogFrame\\UI-DialogBox-Background",
+                            edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
+                            tile = true,
+                            tileSize = 32,
+                            edgeSize = 32,
+                            insets = { left = 11, right = 12, top = 12, bottom = 11 },
+                        };
+                        self:SetBackdrop(backdropInfo);
+                    </OnLoad>
+                </Scripts>
             </Frame>
 
             <!-- Scroll area for event details -->
-            <Frame name="$parentBorder" enableMouse="true" hidden="false">
+            <Frame name="$parentBorder" enableMouse="true" hidden="false" inherits="BackdropTemplate">
                 <Layers>
                     <Layer level="BACKGROUND">
                         <Texture name="$parentTexture">
@@ -553,17 +594,6 @@
                         <Offset><AbsDimension x="15" y="-60"/></Offset>
                     </Anchor>
                 </Anchors>
-                <Backdrop  edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="false">
-                    <BackgroundInsets>
-                        <AbsInset left="5" right="5" top="5" bottom="5"/>
-                    </BackgroundInsets>
-                    <TileSize>
-                        <AbsValue val="16"/>
-                    </TileSize>
-                    <EdgeSize>
-                        <AbsValue val="16"/>
-                    </EdgeSize>
-                </Backdrop>
 
                 <Frames>
                     <Button name="EventItem1" inherits="EventDetail_Template">
@@ -666,6 +696,30 @@
                         </Anchors>
                     </Button>
                 </Frames>
+                <!-- <Backdrop  edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="false">
+                    <BackgroundInsets>
+                        <AbsInset left="5" right="5" top="5" bottom="5"/>
+                    </BackgroundInsets>
+                    <TileSize>
+                        <AbsValue val="16"/>
+                    </TileSize>
+                    <EdgeSize>
+                        <AbsValue val="16"/>
+                    </EdgeSize>
+                </Backdrop> -->
+                <Scripts>
+                    <OnLoad inherit="prepend">
+                        local backdropInfo =
+                        {
+                            edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+                            tile = false,
+                            tileSize = 16,
+                            edgeSize = 16,
+                            insets = { left = 5, right = 5, top = 5, bottom = 5 },
+                        };
+                        self:SetBackdrop(backdropInfo);
+                    </OnLoad>
+                </Scripts>
             </Frame>
 
             <!-- Scroll buttons -->
@@ -772,7 +826,17 @@
 
         </Frames>
         <Scripts>
-            <OnLoad>
+            <OnLoad inherit="prepend">
+                local backdropInfo =
+                {
+                    bgFile="Interface\\DialogFrame\\UI-DialogBox-Background",
+                    edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
+                    tile = true,
+                    tileSize = 32,
+                    edgeSize = 32,
+                    insets = { left = 11, right = 12, top = 12, bottom = 11 },
+                };
+                self:SetBackdrop(backdropInfo);
             </OnLoad>
             <OnShow>
                 EventTracker_Scroll_Details();
