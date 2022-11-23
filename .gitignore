@@ -1,0 +1,9 @@
+metadata.txt
+metadata.json
+.release
+
+**/desktop.ini
+.DS_Store
+.install
+.vscode
+CHANGELOG.md

@@ -65,7 +65,7 @@
         self:RegisterEvent( "VARIABLES_LOADED" );
 
         -- Track other events
-        for key, value in pairs( ET_TRACKED_EVENTS ) do
+        for _, value in pairs( ET_TRACKED_EVENTS ) do
             self:RegisterEvent( strtrim( upper( value ) ) );
         end;
     end;
@@ -73,7 +73,7 @@
 -- Remove the events listed to be ignored
     function EventTracker_RemoveIgnoredEvents()
         -- Track other events
-        for key, value in pairs( ET_IGNORED_EVENTS ) do
+        for _, value in pairs( ET_IGNORED_EVENTS ) do
             EventTracker:UnregisterEvent( strtrim( upper( value ) ) );
         end;
     end;
@@ -124,7 +124,8 @@
 
         -- Redraw items
         for index = length, 1, -1 do
-            local event, timestamp, data, realevent, time_usage, call_stack = unpack( ET_EventDetail[index] );
+            --local event, timestamp, data, realevent, time_usage, call_stack = unpack( ET_EventDetail[index] );
+            local event = unpack( ET_EventDetail[index] );
             if ( event == purgeEvent ) then
                 tremove( ET_EventDetail, index );
             end;
@@ -247,7 +248,7 @@
 -- Scroll function for event details
     function EventTracker_Scroll_Details()
         local length = #ET_EventDetail;
-        local line, index, button, argInfo, argName, argData;
+        local index, button, argInfo;
         local offset = FauxScrollFrame_GetOffset( EventTracker_Details );
         local argName, argData;
 
@@ -261,7 +262,7 @@
             button:SetID( line );
             button:SetAttribute( "index", index );
             if index <= length then
-                local event, timestamp, data, realevent, time_usage, call_stack = unpack( ET_EventDetail[index] );
+                local event, timestamp, data, _, _, _ = unpack( ET_EventDetail[index] );
                 _G["EventItem"..line.."InfoEvent"]:SetText( event );
                 _G["EventItem"..line.."InfoTimestamp"]:SetText( date( "%Y-%m-%d %H:%M:%S", timestamp ) );
                 argInfo = "";
@@ -282,7 +283,7 @@
 -- Scroll function for event arguments
     function EventTracker_Scroll_Arguments()
         local length = #ET_ArgumentInfo;
-        local line, index, button, argName, argData;
+        local index, button, argName, argData;
         local offset = FauxScrollFrame_GetOffset( EventTracker_Arguments );
 
         -- Update scrollbars
@@ -309,7 +310,7 @@
 -- Scroll function for frames registered
     function EventTracker_Scroll_Frames()
         local length = #ET_FrameInfo;
-        local line, index, button;
+        local index, button;
         local offset = FauxScrollFrame_GetOffset( EventTracker_Frames );
 
         -- Update scrollbars
@@ -365,7 +366,7 @@
 
 -- Handle click on event item
     function EventTracker_EventOnClick( self, button, down )
-        local event, timestamp, data, realevent, time_usage, call_stack = unpack( ET_EventDetail[ FauxScrollFrame_GetOffset( EventTracker_Details ) + self:GetID() ] );
+        local event, _, data, realevent, time_usage, call_stack = unpack( ET_EventDetail[ FauxScrollFrame_GetOffset( EventTracker_Details ) + self:GetID() ] );
 
         if ( IsShiftKeyDown() ) then
             EventTracker:UnregisterEvent( event );
@@ -398,7 +399,7 @@
 
 -- Show help message
     function EventTracker_ShowHelp()
-        for key, value in pairs( ET_HELP ) do
+        for _, value in pairs( ET_HELP ) do
             EventTracker_Message( value );
         end;
     end;

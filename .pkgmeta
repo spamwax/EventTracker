@@ -1,0 +1,17 @@
+package-as: EventTracker
+
+enable-nolib-creation: no
+
+manual-changelog:
+  filename: CHANGELOG.md
+  markup-type: markdown
+
+ignore:
+  - metadata.json
+  - misc
+  - "*.png"
+  - generate_changelog.sh
+  - readme.md
+  - CHANGELOG.md
+  - TODO.md
+  - LICENSE

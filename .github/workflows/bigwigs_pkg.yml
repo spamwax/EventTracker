@@ -1,0 +1,37 @@
+name: curseforge packager
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+    tags:
+      - "*"
+      - "!**-alpha**"
+      - "!**-beta**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 200
+
+      - name: Install and run Luacheck
+        uses: nebularg/actions-luacheck@v1
+        with:
+          args: "--no-color -q"
+          annotate: warning
+
+      - name: Generate Changelog
+        if: github.ref_type == 'tag'
+        run: .github/workflows/generate_changelog.sh
+
+      - name: Create Package
+        uses: BigWigsMods/packager@v2
+        if: github.ref_type == 'tag'
+        env:
+          GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
+          WAGO_API_TOKEN: ${{ secrets.WAGO_API_TOKEN }}
