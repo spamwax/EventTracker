@@ -1,12 +1,13 @@
 <h3 id="event-tracker">Event Tracker</h3>
-<p>Using this addon you can view detailed information about the <strong>events</strong> are triggered by the game.</p>
+<p>Using this addon you can view detailed information about the <strong>events</strong> that are triggered by the game.
+</p>
 <p>Detailed information such as arguments of the event's payload for the tracked events/functions are displayed. You can
     also see which frames are monitoring specific events.</p>
 <p>You can also track function calls to see time spent during the execution of the function (on a call per call base as
     well as the total execution time).</p>
 <p>You have two options to track standard WoW events</p>
 <ul>
-    <li>Update the file <code>EventTracker_events.lua yourself</code>. The following is an example of how the contents
+    <li>Update the file <code>EventTracker_events.lua</code> yourself. The following is an example of how the contents
         of the file may look like.</li>
 </ul>
 <pre><code>-- Events to be tracked <br />ET_TRACKED_EVENTS = {<br />  &nbsp;"PLAYER_LEVEL_UP",<br />&nbsp;"PLAYER_XP_UPDATE",<br />&nbsp;"UNIT_HEALTH"<br />};<br />-- Events to be ignored (applied when using /et registerall) <br />ET_IGNORED_EVENTS = {<br />&nbsp;"BAG_UPDATE_COOLDOWN",<br />&nbsp;"ACTIONBAR_UPDATE_COOLDOWN",<br />&nbsp;"UNIT_POWER_FREQUENT",<br />} <br /></code></pre>
@@ -68,7 +69,8 @@
 </table>
 <p>&nbsp;</p>
 <h4>Notice</h4>
-<p>This project was abandoned since 2009 and I just took over it. My goal is to keep it working under
-    <code>retail</code> version. If you have issues with under clients (such as WOTLK),
+<p>This project was abandoned since 2016 and I just took over it.
+    My goal is to keep it working under <code>retail</code> version.
+    <br />If you have issues with under clients (such as WOTLK),
     please submit a PR on <a href="https://github.com/spamwax/EventTracker">github page</a>.
 </p>
