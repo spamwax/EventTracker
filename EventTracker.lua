@@ -94,7 +94,7 @@
         else
             -- Show the frame
             EventTrackerFrame:Show();
-            EventTrackerFrame:SetBackdropColor( 0, 0, 0, .5 );
+            EventTrackerFrame:SetBackdropColor( 0, 0, 0, 1 );
 
             -- Update the UI
             EventTracker_UpdateUI();
@@ -109,10 +109,75 @@
         else
             -- Show the frame
             EventDetailFrame:Show();
-            EventDetailFrame:SetBackdropColor( 0, 0, 0, .5 );
+            EventDetailFrame:SetBackdropColor( 0, 0, 0, 1 );
             ExpandCollapseButton:SetText( ET_HIDE_DETAILS );
         end;
     end;
+
+    -- local kbDEBUG = true
+    -- local function ViragPrint(strName, tData, x)
+    --     local f = select(2, IsAddOnLoaded("ViragDevTool"))
+    --     print("IsAddOnLoaded", f)
+    --     if ViragDevTool.AddData and kbDEBUG then
+    --       ViragDevTool:AddData(tData, strName)
+    --     end
+    -- end
+-- Mixin for event's arguments items
+    EventArguments_ScrollableListItemMixin = {}
+    function EventArguments_ScrollableListItemMixin:Init(elementData)
+        --DevTools_Dump(elementData)
+        self.Argument:SetText(elementData.argName)
+        self.ArgumentValue:SetText(elementData.argData)
+    end
+-- Mixin for events arguments list
+    EventArguments_ScrollableListMixin = {}
+    function EventArguments_ScrollableListMixin:OnLoad()
+        self.DataProvider = CreateDataProvider();
+        -- local elementExtent = 16;
+        self.ScrollView = CreateScrollBoxListLinearView();
+        self.ScrollView:SetDataProvider(self.DataProvider);
+        -- self.ScrollView:SetElementExtent(elementExtent);
+        if _G.WOW_PROJECT_ID == _G.WOW_PROJECT_MAINLINE then
+            self.ScrollView:SetElementInitializer("EventArguments_ScrollableListItemTemplate", function(frame, elementData)
+                frame:Init(elementData)
+            end);
+        else
+            self.ScrollView:SetElementInitializer("Frame", "EventArguments_ScrollableListItemTemplate", function(frame, elementData)
+                frame:Init(elementData)
+            end);
+        end
+
+        local paddingT = 10;
+        local paddingB = 10;
+        local paddingL = 10;
+        local paddingR = 10;
+        local spacing = 5;
+
+        self.ScrollView:SetPadding(paddingT, paddingB, paddingL, paddingR, spacing);
+
+        -- The below call is required to hook everything up automatically.
+        ScrollUtil.InitScrollBoxListWithScrollBar(self.ScrollBox, self.ScrollBar, self.ScrollView);
+
+        local anchorsWithBar = {
+            CreateAnchor("TOPLEFT", self, "TOPLEFT", 4, -4),
+            CreateAnchor("BOTTOMRIGHT", self.ScrollBar, "BOTTOMLEFT", 0, 4),
+        };
+
+        local anchorsWithoutBar = {
+            CreateAnchor("TOPLEFT", self, "TOPLEFT", 4, -4),
+            CreateAnchor("BOTTOMRIGHT", self, "BOTTOMRIGHT", -4, 4),
+        };
+        ScrollUtil.AddManagedScrollBarVisibilityBehavior(self.ScrollBox, self.ScrollBar, anchorsWithBar, anchorsWithoutBar);
+    end
+
+    function EventArguments_ScrollableListMixin:AppendListItem(elementData)
+        self.DataProvider:Insert(elementData)
+        self.ScrollBox:ScrollToBegin(ScrollBoxConstants.NoScrollInterpolation);
+    end
+
+    function EventArguments_ScrollableListMixin:Clear()
+        self.DataProvider:Flush()
+    end
 
 -- Purge data for specific event
     function EventTracker_PurgeEvent( purgeEvent )
@@ -134,7 +199,10 @@
         -- Update UI elements
         EventCallStack:SetText( "" );
         EventTracker_Scroll_Details();
-        EventTracker_Scroll_Arguments();
+        -- Hide the detail window if already showing
+        if ( EventDetailFrame:IsVisible() ) then
+            EventTracker_Toggle_Details();
+        end;
         EventTracker_Scroll_Frames();
         EventTracker_UpdateUI();
     end;
@@ -151,7 +219,10 @@
         -- Update UI elements
         EventCallStack:SetText( "" );
         EventTracker_Scroll_Details();
-        EventTracker_Scroll_Arguments();
+        -- Hide the detail window if already showing
+        if ( EventDetailFrame:IsVisible() ) then
+            EventTracker_Toggle_Details();
+        end;
         EventTracker_Scroll_Frames();
         EventTracker_UpdateUI();
     end;
@@ -170,7 +241,7 @@
         if (event == "COMBAT_LOG_EVENT_UNFILTERED" or event == "COMBAT_LOG_EVENT") then
             data = { CombatLogGetCurrentEventInfo() }
             --@debug@
-            DevTools_Dump(data)
+            --DevTools_Dump(data)
             --@end-debug@
         end
 
@@ -247,13 +318,29 @@
         return C_BLUE..argName..C_CLOSE, C_YELLOW..argData..C_CLOSE;
     end;
 
+-- Scrool callback for mouse wheel
+    function EventTracker_WheelScroll(frame, delta)
+        local scrolller = _G["EventTracker_Details"]
+        local n = scrolller:GetVerticalScroll() - (delta*15) -- Change multiplication factor to change scroll speed
+        if n < 0 then
+            n = 0
+        elseif n > scrolller:GetVerticalScrollRange() then
+            n = scrolller:GetVerticalScrollRange()
+        end
+        scrolller:SetVerticalScroll(n)
+        n = math.floor((n / 30) + 0.5)
+        FauxScrollFrame_SetOffset(EventTracker_Details, n)
+        EventTracker_Scroll_Details()
+    end
+
 -- Scroll function for event details
     function EventTracker_Scroll_Details()
         local length = #ET_EventDetail;
         local index, button, argInfo;
-        local offset = FauxScrollFrame_GetOffset( EventTracker_Details );
+        local offset
         local argName, argData;
 
+        offset = FauxScrollFrame_GetOffset( EventTracker_Details );
         -- Update scrollbars
         FauxScrollFrame_Update( EventTracker_Details, length+1, ET_DETAILS, 30 );
 
@@ -269,11 +356,18 @@
                 _G["EventItem"..line.."InfoTimestamp"]:SetText( date( "%Y-%m-%d %H:%M:%S", timestamp ) );
                 argInfo = "";
 
-                for key, value in pairs( data ) do
-                    argName, argData = EventTracker_GetStrings( event, key, value );
-                    argInfo = argInfo..", "..argName.." = "..argData;
-                end;
-                _G["EventItem"..line.."InfoData"]:SetText( substr( argInfo, 3 ) );
+                local coloredString
+                if not ET_EventDetail[index].coloredString then
+                    for key, value in pairs( data ) do
+                        argName, argData = EventTracker_GetStrings( event, key, value );
+                        argInfo = argInfo..","..argName.."="..argData;
+                    end;
+                    coloredString = substr(argInfo, 2)
+                    ET_EventDetail[index].coloredString = coloredString
+                else
+                    coloredString = ET_EventDetail[index].coloredString
+                end
+                _G["EventItem"..line.."InfoData"]:SetText(coloredString);
                 button:Show();
                 button:Enable();
             else
@@ -284,29 +378,17 @@
 
 -- Scroll function for event arguments
     function EventTracker_Scroll_Arguments()
-        local length = #ET_ArgumentInfo;
-        local index, button, argName, argData;
-        local offset = FauxScrollFrame_GetOffset( EventTracker_Arguments );
+        local argName, argData;
 
-        -- Update scrollbars
-        FauxScrollFrame_Update( EventTracker_Arguments, length+1, ET_ARGUMENTS, 16 );
-
-        -- Redraw items
-        for line = 1, ET_ARGUMENTS, 1 do
-            index = offset + line;
-            button = _G["EventArgument"..line];
-            button:SetID( line );
-            button:SetAttribute( "index", index );
-            if index <= length then
-                argName, argData = EventTracker_GetStrings( ET_CurrentEvent, index, ET_ArgumentInfo[index] );
-                _G["EventArgument"..line.."InfoArgument"]:SetText( argName );
-                _G["EventArgument"..line.."InfoData"]:SetText( argData );
-                button:Show();
-                button:Enable();
-            else
-                button:Hide();
-            end;
-        end;
+        local maxIdx = 0
+        for k, _ in pairs(ET_ArgumentInfo) do
+            if k > maxIdx then maxIdx = k end
+        end
+        --for index, v in pairs(ET_ArgumentInfo) do
+        for index = 1, maxIdx, 1 do
+            argName, argData = EventTracker_GetStrings(ET_CurrentEvent, index, ET_ArgumentInfo[index])
+            _G["Event_Argument_Frame"].EventArgumentsListFrame:AppendListItem({argName=argName, argData=argData})
+        end
     end;
 
 -- Scroll function for frames registered
@@ -385,6 +467,7 @@
                     Event_Frame_FrameHeading:SetText( ET_CALLSTACK_TEXT );
                     EventCallStack:SetText( call_stack );
                 end;
+                _G["Event_Argument_Frame"].EventArgumentsListFrame:Clear()
                 ET_ArgumentInfo = data;
                 ET_CurrentEvent = event;
                 EventTracker_Scroll_Arguments();

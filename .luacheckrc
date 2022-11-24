@@ -131,6 +131,7 @@ globals = {
     "GetSpellInfo",
     "IsSpellKnown",
     "GetCurrentCombatTextEventInfo",
+    "IsAddOnLoaded",
     "hooksecurefunc",
     "SlashCmdList",
 
@@ -208,6 +209,7 @@ globals = {
     "EventTracker_Scroll_Frames",
     "EventTracker_Purge",
     "EventTracker_OnEvent",
+    "EventTracker_WheelScroll",
     "ET_STATE_OFF",
     "EventTracker_Toggle",
     "EventTracker_EventOnClick",
@@ -217,6 +219,15 @@ globals = {
     "ET_CLOSE_BUTTON",
     "ET_STATE_ONOFF",
     "ET_ARGUMENTS_TEXT",
+
+    "EventArguments_ScrollableListItemMixin",
+    "EventArguments_ScrollableListMixin",
+    "EventArguments_FrameMixin",
+    "CreateDataProvider",
+    "CreateScrollBoxListLinearView",
+    "CreateAnchor",
+    "ScrollUtil",
+    "ScrollBoxConstants",
 
     "ET_UNNAMED_FRAME",
     "ET_EVENT_COUNT",
@@ -244,5 +255,10 @@ globals = {
     "ET_DETAILS",
     "ET_ARGUMENTS",
     "ET_FRAMES",
+
+
+-- Misc
+    "ViragPrint",
+    "ViragDevTool"
 }
 

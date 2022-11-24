@@ -87,40 +87,70 @@
         </Scripts>
         <HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD"/>
     </Button>
-
 <!-- Template button for event arguments -->
-    <Button name="EventArgument_Template" virtual="true">
-        <Size><AbsDimension x="395" y="16"/></Size>
+    <Frame name="EventArguments_ScrollableListItemTemplate" virtual="true" mixin="EventArguments_ScrollableListItemMixin">
+        <Size y="16"/>
+        <Layers>
+            <Layer level="BORDER">
+                <Texture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD" parentKey="Highlight" hidden="true">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativePoint="TOPLEFT">
+                            <Offset><AbsDimension x="-5" y="+2"/></Offset>
+                        </Anchor>
+                        <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT">
+                            <Offset><AbsDimension x="+5" y="-2"/></Offset>
+                        </Anchor>
+                    </Anchors>
+                    <Color r="0.8" g="0.8" b="0.1" a="0.3"/>
+                </Texture>
+                <FontString inherits="GameFontNormal" justifyH="LEFT" parentKey="Argument">
+                    <Anchors>
+                        <Anchor point="TOPLEFT"/>
+                    </Anchors>
+                    <Size>
+                        <AbsDimension x="150" y="16"/>
+                    </Size>
+                </FontString>
+                <FontString inherits="GameFontNormal" justifyH="LEFT" parentKey="ArgumentValue">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativeKey="$parent.Argument" relativePoint="TOPRIGHT">
+                            <Offset><AbsDimension x="5"/></Offset>
+                        </Anchor>
+                    </Anchors>
+                    <Size>
+                        <AbsDimension x="230" y="16"/>
+                    </Size>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnEnter>
+                self.Highlight:Show()
+            </OnEnter>
+            <OnLeave>
+                self.Highlight:Hide()
+            </OnLeave>
+        </Scripts>
+    </Frame>
+
+    <Frame name="EventArguments_ScrollableListTemplate" mixin="EventArguments_ScrollableListMixin" virtual="true">
         <Frames>
-            <Frame name="$parentInfo" setAllPoints="true">
-                <Layers>
-                    <Layer level="BORDER">
-                        <FontString name="$parentArgument" inherits="GameFontNormal" justifyH="LEFT">
-                            <Anchors>
-                                <Anchor point="TOPLEFT">
-                                    <Offset><AbsDimension x="10" y="0"/></Offset>
-                                </Anchor>
-                            </Anchors>
-                            <Size>
-                                <AbsDimension x="150" y="16"/>
-                            </Size>
-                        </FontString>
-                        <FontString name="$parentData" inherits="GameFontNormal" justifyH="LEFT">
-                            <Anchors>
-                                <Anchor point="TOPLEFT" relativeTo="$parentArgument" relativePoint="TOPRIGHT">
-                                    <Offset><AbsDimension x="5" y="0"/></Offset>
-                                </Anchor>
-                            </Anchors>
-                            <Size>
-                                <AbsDimension x="230" y="16"/>
-                            </Size>
-                        </FontString>
-                    </Layer>
-                </Layers>
-            </Frame>
+            <Frame parentKey="ScrollBox" inherits="WowScrollBoxList"/>
+            <EventFrame parentKey="ScrollBar" inherits="WowTrimScrollBar">
+                <Anchors>
+                    <Anchor point="TOPRIGHT">
+                        <Offset><AbsDimension x="24" y="0"/></Offset>
+                    </Anchor>
+                    <Anchor point="BOTTOMRIGHT">
+                        <Offset><AbsDimension x="24" y="0"/></Offset>
+                    </Anchor>
+                </Anchors>
+            </EventFrame>
         </Frames>
-        <HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD"/>
-    </Button>
+        <Scripts>
+            <OnLoad method="OnLoad"/>
+        </Scripts>
+    </Frame>
 
 <!-- Template button for event frames -->
     <Button name="EventFrame_Template" virtual="true">
@@ -213,7 +243,7 @@
         </Layers>
 
         <Frames>
-            <!-- Detail frame -->
+            <!-- Argument/Frame side frame -->
             <Frame name="EventDetailFrame" frameStrata="BACKGROUND" hidden="true" inherits="BackdropTemplate">
                 <Layers>
                     <Layer level="ARTWORK">
@@ -240,6 +270,7 @@
                 </Anchors>
                 <Frames>
                     <!-- Scroll area for argument information -->
+                    <!-- <Frame name="Event_Argument_Frame" enableMouse="true" hidden="false" inherits="BackdropTemplate" mixin="EventArguments_FrameMixin"> -->
                     <Frame name="Event_Argument_Frame" enableMouse="true" hidden="false" inherits="BackdropTemplate">
                         <Layers>
                             <Layer level="BACKGROUND">
@@ -250,7 +281,7 @@
                                     <Anchors>
                                         <Anchor point="CENTER"/>
                                     </Anchors>
-                                    <Color r="0.1" g="0.1" b="0.1" a="0.5"/>
+                                    <Color r="0.1" g="0.1" b="0.1" a="0.8"/>
                                 </Texture>
                             </Layer>
                             <Layer level="ARTWORK">
@@ -281,69 +312,20 @@
                             </Layer>
                         </Layers>
                         <Size>
-                            <AbsDimension x="420" y="169"/>
+                            <AbsDimension x="405" y="169"/>
                         </Size>
                         <Anchors>
                             <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
-                                <Offset><AbsDimension x="15" y="-50"/></Offset>
+                                <Offset><AbsDimension x="10" y="-50"/></Offset>
                             </Anchor>
                         </Anchors>
                         <Frames>
-                            <!-- Argument buttons -->
-                            <Button name="EventArgument1" inherits="EventArgument_Template">
+                            <Frame parentKey="EventArgumentsListFrame" inherits="EventArguments_ScrollableListTemplate">
                                 <Anchors>
-                                    <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" >
-                                        <Offset>
-                                            <AbsDimension x="0" y="-5"/>
-                                        </Offset>
-                                    </Anchor>
+                                    <Anchor point="TOPLEFT" relativeKey="$parent.Inset"/>
+                                    <Anchor point="BOTTOMRIGHT" relativeKey="$parent.Inset"/>
                                 </Anchors>
-                            </Button>
-                            <Button name="EventArgument2" inherits="EventArgument_Template">
-                                <Anchors>
-                                    <Anchor point="TOP" relativeTo="EventArgument1" relativePoint="BOTTOM"/>
-                                </Anchors>
-                            </Button>
-                            <Button name="EventArgument3" inherits="EventArgument_Template">
-                                <Anchors>
-                                    <Anchor point="TOP" relativeTo="EventArgument2" relativePoint="BOTTOM"/>
-                                </Anchors>
-                            </Button>
-                            <Button name="EventArgument4" inherits="EventArgument_Template">
-                                <Anchors>
-                                    <Anchor point="TOP" relativeTo="EventArgument3" relativePoint="BOTTOM"/>
-                                </Anchors>
-                            </Button>
-                            <Button name="EventArgument5" inherits="EventArgument_Template">
-                                <Anchors>
-                                    <Anchor point="TOP" relativeTo="EventArgument4" relativePoint="BOTTOM"/>
-                                </Anchors>
-                            </Button>
-                            <Button name="EventArgument6" inherits="EventArgument_Template">
-                                <Anchors>
-                                    <Anchor point="TOP" relativeTo="EventArgument5" relativePoint="BOTTOM"/>
-                                </Anchors>
-                            </Button>
-                            <Button name="EventArgument7" inherits="EventArgument_Template">
-                                <Anchors>
-                                    <Anchor point="TOP" relativeTo="EventArgument6" relativePoint="BOTTOM"/>
-                                </Anchors>
-                            </Button>
-                            <Button name="EventArgument8" inherits="EventArgument_Template">
-                                <Anchors>
-                                    <Anchor point="TOP" relativeTo="EventArgument7" relativePoint="BOTTOM"/>
-                                </Anchors>
-                            </Button>
-                            <Button name="EventArgument9" inherits="EventArgument_Template">
-                                <Anchors>
-                                    <Anchor point="TOP" relativeTo="EventArgument8" relativePoint="BOTTOM"/>
-                                </Anchors>
-                            </Button>
-                            <Button name="EventArgument10" inherits="EventArgument_Template">
-                                <Anchors>
-                                    <Anchor point="TOP" relativeTo="EventArgument9" relativePoint="BOTTOM"/>
-                                </Anchors>
-                            </Button>
+                            </Frame>
                         </Frames>
                         <!-- <Backdrop  edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="false">
                             <BackgroundInsets>
@@ -371,21 +353,6 @@
                         </Scripts>
                     </Frame>
                     <!-- Scroll buttons -->
-                    <ScrollFrame name="EventTracker_Arguments" inherits="FauxScrollFrameTemplate" enableMouse="true">
-                        <Size>
-                            <AbsDimension x="16" y="159"/>
-                        </Size>
-                        <Anchors>
-                            <Anchor point="TOPRIGHT" relativeTo="Event_Argument_Frame" relativePoint="TOPRIGHT">
-                                <Offset><AbsDimension x="-28" y="-6"/></Offset>
-                            </Anchor>
-                        </Anchors>
-                        <Scripts>
-                            <OnVerticalScroll>
-                                FauxScrollFrame_OnVerticalScroll( self, offset, 16, EventTracker_Scroll_Arguments );
-                            </OnVerticalScroll>
-                        </Scripts>
-                    </ScrollFrame>
 
                     <!-- Scroll area for frame information -->
                     <Frame name="Event_Frame_Frame" enableMouse="true" hidden="false" inherits="BackdropTemplate">
@@ -718,7 +685,11 @@
                             insets = { left = 5, right = 5, top = 5, bottom = 5 },
                         };
                         self:SetBackdrop(backdropInfo);
+                        self:EnableMouseWheel(true);
                     </OnLoad>
+                    <OnMouseWheel>
+                        EventTracker_WheelScroll(self, delta);
+                    </OnMouseWheel>
                 </Scripts>
             </Frame>
 
@@ -736,6 +707,9 @@
                     <OnVerticalScroll>
                         FauxScrollFrame_OnVerticalScroll( self, offset, 30, EventTracker_Scroll_Details );
                     </OnVerticalScroll>
+                    <OnShow>
+                        EventTracker_Scroll_Details()
+                    </OnShow>
                 </Scripts>
             </ScrollFrame>
 
@@ -826,6 +800,9 @@
 
         </Frames>
         <Scripts>
+            <!-- <OnMouseWheel>
+            print("scrolling!")
+            </OnMouseWheel> -->
             <OnLoad inherit="prepend">
                 local backdropInfo =
                 {
