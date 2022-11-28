@@ -95,10 +95,10 @@
                 <Texture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD" parentKey="Highlight" hidden="true">
                     <Anchors>
                         <Anchor point="TOPLEFT" relativePoint="TOPLEFT">
-                            <Offset><AbsDimension x="-5" y="+2"/></Offset>
+                            <Offset><AbsDimension x="-5" y="+3"/></Offset>
                         </Anchor>
                         <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT">
-                            <Offset><AbsDimension x="+5" y="-2"/></Offset>
+                            <Offset><AbsDimension x="+5" y="0"/></Offset>
                         </Anchor>
                     </Anchors>
                     <Color r="0.8" g="0.8" b="0.1" a="0.3"/>
@@ -108,7 +108,7 @@
                         <Anchor point="TOPLEFT"/>
                     </Anchors>
                     <Size>
-                        <AbsDimension x="150" y="16"/>
+                        <AbsDimension x="128" y="14"/>
                     </Size>
                 </FontString>
                 <FontString inherits="GameFontNormal" justifyH="LEFT" parentKey="ArgumentValue">
@@ -118,7 +118,7 @@
                         </Anchor>
                     </Anchors>
                     <Size>
-                        <AbsDimension x="230" y="16"/>
+                        <AbsDimension x="260" y="14"/>
                     </Size>
                 </FontString>
             </Layer>
@@ -279,7 +279,8 @@
                                         <AbsDimension x="415" y="164"/>
                                     </Size>
                                     <Anchors>
-                                        <Anchor point="CENTER"/>
+                                        <Anchor point="TOPLEFT"/>
+                                        <Anchor point="BOTTOMRIGHT"/>
                                     </Anchors>
                                     <Color r="0.1" g="0.1" b="0.1" a="0.8"/>
                                 </Texture>
@@ -312,7 +313,7 @@
                             </Layer>
                         </Layers>
                         <Size>
-                            <AbsDimension x="405" y="169"/>
+                            <AbsDimension x="405" y="174"/>
                         </Size>
                         <Anchors>
                             <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">

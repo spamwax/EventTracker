@@ -147,11 +147,13 @@
             end);
         end
 
-        local paddingT = 10;
-        local paddingB = 10;
-        local paddingL = 10;
-        local paddingR = 10;
-        local spacing = 5;
+        local padding = 3
+        local s= 1
+        local paddingT = padding;
+        local paddingB = padding+5;
+        local paddingL = padding;
+        local paddingR = padding;
+        local spacing = s;
 
         self.ScrollView:SetPadding(paddingT, paddingB, paddingL, paddingR, spacing);
 
