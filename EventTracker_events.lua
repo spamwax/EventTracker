@@ -21,7 +21,19 @@
         "BAG_UPDATE_COOLDOWN",
         "ACTIONBAR_UPDATE_COOLDOWN",
         "SPELL_UPDATE_COOLDOWN",
-        "CURSOR_UPDATE",
         "CRITERIA_UPDATE",
+        --@debug@
         "UPDATE_MOUSEOVER_UNIT",
+        "WORLD_CURSOR_TOOLTIP_UPDATE",
+        "CURSOR_CHANGED",
+        "PLAYER_STARTED_TURNING",
+        "PLAYER_STOPPED_TURNING",
+        "MODIFIER_STATE_CHANGED",
+        "SPELL_ACTIVATION_OVERLAY_HIDE",
+        "SPELL_UPDATE_USABLE",
+        "GLOBAL_MOUSE_DOWN",
+        "GLOBAL_MOUSE_UP",
+        "UNIT_POWER_UPDATE",
+        "UNIT_POWER_FREQUENT",
+        --@end-debug@
     };
