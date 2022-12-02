@@ -221,7 +221,9 @@ globals = {
     "ET_ARGUMENTS_TEXT",
 
     "EventArguments_ScrollableListItemMixin",
+    "EventFrames_ScrollableListItemMixin",
     "EventArguments_ScrollableListMixin",
+    "EventTracker_ScrollableListMixin",
     "EventArguments_FrameMixin",
     "CreateDataProvider",
     "CreateScrollBoxListLinearView",

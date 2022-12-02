@@ -122,6 +122,12 @@
     --       ViragDevTool:AddData(tData, strName)
     --     end
     -- end
+-- Mixin for frames list items
+    EventFrames_ScrollableListItemMixin = {}
+    function EventFrames_ScrollableListItemMixin:Init(elementData)
+        self.FrameName:SetText(elementData.frameName)
+    end
+
 -- Mixin for event's arguments items
     EventArguments_ScrollableListItemMixin = {}
     function EventArguments_ScrollableListItemMixin:Init(elementData)
@@ -129,9 +135,11 @@
         self.Argument:SetText(elementData.argName)
         self.ArgumentValue:SetText(elementData.argData)
     end
--- Mixin for events arguments list
-    EventArguments_ScrollableListMixin = {}
-    function EventArguments_ScrollableListMixin:OnLoad()
+
+
+-- Mixin for scrollable list frame
+    EventTracker_ScrollableListMixin = {}
+    function EventTracker_ScrollableListMixin:OnLoad()
         self.DataProvider = CreateDataProvider();
         -- local elementExtent = 16;
         self.ScrollView = CreateScrollBoxListLinearView();
@@ -174,12 +182,12 @@
         ScrollUtil.AddManagedScrollBarVisibilityBehavior(self.ScrollBox, self.ScrollBar, anchorsWithBar, anchorsWithoutBar);
     end
 
-    function EventArguments_ScrollableListMixin:AppendListItem(elementData)
+    function EventTracker_ScrollableListMixin:AppendListItem(elementData)
         self.DataProvider:Insert(elementData)
         self.ScrollBox:ScrollToBegin(ScrollBoxConstants.NoScrollInterpolation);
     end
 
-    function EventArguments_ScrollableListMixin:Clear()
+    function EventTracker_ScrollableListMixin:Clear()
         self.DataProvider:Flush()
     end
 
@@ -395,30 +403,11 @@
         end
     end;
 
--- Scroll function for frames registered
     function EventTracker_Scroll_Frames()
-        local length = #ET_FrameInfo;
-        local index, button;
-        local offset = FauxScrollFrame_GetOffset( EventTracker_Frames );
-
-        -- Update scrollbars
-        FauxScrollFrame_Update( EventTracker_Frames, length+1, ET_FRAMES, 16 );
-
-        -- Redraw items
-        for line = 1, ET_FRAMES, 1 do
-            index = offset + line;
-            button = _G["EventFrame"..line];
-            button:SetID( line );
-            button:SetAttribute( "index", index );
-            if index <= length then
-                _G["EventFrame"..line.."InfoFrame"]:SetText( ( ET_FrameInfo[index]:GetName() or ET_UNNAMED_FRAME ) );
-                button:Show();
-                button:Enable();
-            else
-                button:Hide();
-            end;
-        end;
-    end;
+        for _, v in pairs(ET_FrameInfo) do
+            _G["Event_Frame_Frame"].EventFramesListFrame:AppendListItem({frameName = v:GetName() or ET_UNNAMED_FRAME})
+        end
+    end
 
 -- Update the UI
     function EventTracker_UpdateUI( currenttime )
@@ -472,6 +461,7 @@
                     EventCallStack:SetText( call_stack );
                 end;
                 _G["Event_Argument_Frame"].EventArgumentsListFrame:Clear()
+                _G["Event_Frame_Frame"].EventFramesListFrame:Clear()
                 ET_ArgumentInfo = data;
                 ET_CurrentEvent = event;
                 EventTracker_Scroll_Arguments();
