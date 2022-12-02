@@ -13,10 +13,10 @@
         </Scripts>
     </Frame>
 
-<!-- Dialog template -->
+    <!-- Dialog template -->
     <Frame name="EventTracker_Dialog" hidden="true" virtual="true" frameStrata="DIALOG" parent="UIParent" inherits="BackdropTemplate">
         <Size>
-            <AbsDimension x="700" y="410"/>
+            <AbsDimension x="700" y="410" />
         </Size>
         <!-- See https://wowpedia.fandom.com/wiki/BackdropTemplate and https://www.townlong-yak.com/framexml/live/Backdrop.lua -->
         <!-- <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
@@ -31,7 +31,7 @@
             </EdgeSize>
         </Backdrop> -->
         <Anchors>
-            <Anchor point="CENTER"/>
+            <Anchor point="CENTER" />
         </Anchors>
         <Scripts>
             <OnMouseDown>self:StartMoving();</OnMouseDown>
@@ -40,9 +40,11 @@
         </Scripts>
     </Frame>
 
-<!-- Template button for event details -->
+    <!-- Template button for event details -->
     <Button name="EventDetail_Template" virtual="true">
-        <Size><AbsDimension x="645" y="30"/></Size>
+        <Size>
+            <AbsDimension x="645" y="30" />
+        </Size>
         <Frames>
             <Frame name="$parentInfo" setAllPoints="true">
                 <Layers>
@@ -50,31 +52,37 @@
                         <FontString name="$parentEvent" inherits="GameFontNormalSmall" justifyH="LEFT">
                             <Anchors>
                                 <Anchor point="TOPLEFT">
-                                    <Offset><AbsDimension x="10" y="-2"/></Offset>
+                                    <Offset>
+                                        <AbsDimension x="10" y="-2" />
+                                    </Offset>
                                 </Anchor>
                             </Anchors>
                             <Size>
-                                <AbsDimension x="150" y="12"/>
+                                <AbsDimension x="150" y="12" />
                             </Size>
                         </FontString>
                         <FontString name="$parentTimestamp" inherits="GameFontHighlightSmall" justifyH="LEFT">
                             <Anchors>
                                 <Anchor point="TOPLEFT" relativeTo="$parentEvent" relativePoint="BOTTOMLEFT">
-                                    <Offset><AbsDimension x="0" y="0"/></Offset>
+                                    <Offset>
+                                        <AbsDimension x="0" y="0" />
+                                    </Offset>
                                 </Anchor>
                             </Anchors>
                             <Size>
-                                <AbsDimension x="150" y="12"/>
+                                <AbsDimension x="150" y="12" />
                             </Size>
                         </FontString>
                         <FontString name="$parentData" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="TOP">
                             <Anchors>
                                 <Anchor point="TOPLEFT" relativeTo="$parentEvent" relativePoint="TOPRIGHT">
-                                    <Offset><AbsDimension x="5" y="2"/></Offset>
+                                    <Offset>
+                                        <AbsDimension x="5" y="2" />
+                                    </Offset>
                                 </Anchor>
                             </Anchors>
                             <Size>
-                                <AbsDimension x="480" y="30"/>
+                                <AbsDimension x="480" y="30" />
                             </Size>
                         </FontString>
                     </Layer>
@@ -85,42 +93,50 @@
             <OnLoad>self:RegisterForClicks( "LeftButtonUp" );</OnLoad>
             <OnClick>EventTracker_EventOnClick( self, button, down );</OnClick>
         </Scripts>
-        <HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD"/>
+        <HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD" />
     </Button>
-<!-- Template button for event arguments -->
+    <!-- Template button for event arguments -->
     <Frame name="EventArguments_ScrollableListItemTemplate" virtual="true" mixin="EventArguments_ScrollableListItemMixin">
-        <Size y="16"/>
+        <Size y="16" />
         <Layers>
             <Layer level="BORDER">
                 <Texture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD" parentKey="Highlight" hidden="true">
                     <Anchors>
                         <Anchor point="TOPLEFT" relativePoint="TOPLEFT">
-                            <Offset><AbsDimension x="-5" y="+3"/></Offset>
+                            <Offset>
+                                <AbsDimension x="-5" y="+3" />
+                            </Offset>
                         </Anchor>
                         <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT">
-                            <Offset><AbsDimension x="+5" y="0"/></Offset>
+                            <Offset>
+                                <AbsDimension x="+5" y="0" />
+                            </Offset>
                         </Anchor>
                     </Anchors>
-                    <Color r="0.8" g="0.8" b="0.1" a="0.3"/>
+                    <Color r="0.8" g="0.8" b="0.1" a="0.3" />
                 </Texture>
                 <FontString inherits="GameFontNormal" justifyH="LEFT" parentKey="Argument">
                     <Anchors>
                         <Anchor point="TOPLEFT" relativePoint="TOPLEFT">
-                            <Offset><AbsDimension x="5" y="+3"/></Offset>
+                            <Offset>
+                                <AbsDimension x="5" y="+3" />
+                            </Offset>
                         </Anchor>
                     </Anchors>
                     <Size>
-                        <AbsDimension x="128" y="14"/>
+                        <AbsDimension x="128" y="14" />
                     </Size>
                 </FontString>
                 <FontString inherits="GameFontNormal" justifyH="LEFT" parentKey="ArgumentValue">
                     <Anchors>
                         <Anchor point="TOPLEFT" relativeKey="$parent.Argument" relativePoint="TOPRIGHT">
-                            <Offset><AbsDimension x="5"/></Offset>
+                            <Offset>
+                                <AbsDimension x="5" />
+                            </Offset>
                         </Anchor>
                     </Anchors>
                     <Size>
-                        <AbsDimension x="260" y="14"/>
+                        <AbsDimension x="260" y="14" />
                     </Size>
                 </FontString>
             </Layer>
@@ -139,26 +155,36 @@
     <Frame name="EventArguments_ScrollableListTemplate" mixin="EventArguments_ScrollableListMixin" virtual="true">
         <Layers>
             <Layer level="BACKGROUND">
-                <Texture name="$parentFuck">
+                <Texture name="$parentTexture">
                     <Anchors>
                         <Anchor point="TOPLEFT">
-                            <Offset><AbsDimension x="2" y="0"/></Offset>
+                            <Offset>
+                                <AbsDimension x="2" y="0" />
+                            </Offset>
                         </Anchor>
-                        <Anchor point="BOTTOMRIGHT"><Offset><AbsDimension x="-5" y="0"></AbsDimension></Offset></Anchor>
+                        <Anchor point="BOTTOMRIGHT">
+                            <Offset>
+                                <AbsDimension x="-5" y="0"></AbsDimension>
+                            </Offset>
+                        </Anchor>
                     </Anchors>
-                    <Color r="0.1" g="0.1" b="0.1" a="0.7"/>
+                    <Color r="0.1" g="0.1" b="0.1" a="0.7" />
                 </Texture>
             </Layer>
         </Layers>
         <Frames>
-            <Frame parentKey="ScrollBox" inherits="WowScrollBoxList"/>
+            <Frame parentKey="ScrollBox" inherits="WowScrollBoxList" />
             <Frame parentKey="scrollBoxBorder" inherits="BackdropTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeKey="$parent.ScrollBox">
-                        <Offset><AbsDimension x="-5" y="3"/></Offset>
+                        <Offset>
+                            <AbsDimension x="-5" y="3" />
+                        </Offset>
                     </Anchor>
                     <Anchor point="BOTTOMRIGHT" relativeKey="$parent.ScrollBox">
-                        <Offset><AbsDimension x="2" y="-3"/></Offset>
+                        <Offset>
+                            <AbsDimension x="2" y="-3" />
+                        </Offset>
                     </Anchor>
                 </Anchors>
                 <Scripts>
@@ -178,22 +204,28 @@
             <EventFrame parentKey="ScrollBar" inherits="WowTrimScrollBar">
                 <Anchors>
                     <Anchor point="TOPRIGHT">
-                        <Offset><AbsDimension x="0" y="0"/></Offset>
+                        <Offset>
+                            <AbsDimension x="0" y="0" />
+                        </Offset>
                     </Anchor>
                     <Anchor point="BOTTOMRIGHT">
-                        <Offset><AbsDimension x="0" y="0"/></Offset>
+                        <Offset>
+                            <AbsDimension x="0" y="0" />
+                        </Offset>
                     </Anchor>
                 </Anchors>
             </EventFrame>
         </Frames>
         <Scripts>
-            <OnLoad method="OnLoad"/>
+            <OnLoad method="OnLoad" />
         </Scripts>
     </Frame>
 
-<!-- Template button for event frames -->
+    <!-- Template button for event frames -->
     <Button name="EventFrame_Template" virtual="true">
-        <Size><AbsDimension x="395" y="16"/></Size>
+        <Size>
+            <AbsDimension x="395" y="16" />
+        </Size>
         <Frames>
             <Frame name="$parentInfo" setAllPoints="true">
                 <Layers>
@@ -201,32 +233,34 @@
                         <FontString name="$parentFrame" inherits="GameFontNormal" justifyH="LEFT">
                             <Anchors>
                                 <Anchor point="TOPLEFT">
-                                    <Offset><AbsDimension x="10" y="0"/></Offset>
+                                    <Offset>
+                                        <AbsDimension x="10" y="0" />
+                                    </Offset>
                                 </Anchor>
                             </Anchors>
                             <Size>
-                                <AbsDimension x="395" y="16"/>
+                                <AbsDimension x="395" y="16" />
                             </Size>
                         </FontString>
                     </Layer>
                 </Layers>
             </Frame>
         </Frames>
-        <HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD"/>
+        <HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD" />
     </Button>
 
-<!-- Main EventTracker frame -->
+    <!-- Main EventTracker frame -->
     <Frame name="EventTrackerFrame" hidden="true" parent="UIParent" frameStrata="MEDIUM" inherits="EventTracker_Dialog" toplevel="true" movable="true" enableMouse="true">
         <Layers>
             <Layer level="BACKGROUND">
                 <Texture name="$parentTexture">
                     <Size>
-                        <AbsDimension x="690" y="400"/>
+                        <AbsDimension x="690" y="400" />
                     </Size>
                     <Anchors>
-                        <Anchor point="CENTER"/>
+                        <Anchor point="CENTER" />
                     </Anchors>
-                    <Color r="0" g="0" b="0" a="0.5"/>
+                    <Color r="0" g="0" b="0" a="0.5" />
                 </Texture>
             </Layer>
 
@@ -234,11 +268,13 @@
                 <!-- Frame title texture/border -->
                 <Texture name="$parentFrameHeader" file="Interface\DialogFrame\UI-DialogBox-Header">
                     <Size>
-                        <AbsDimension x="400" y="64"/>
+                        <AbsDimension x="400" y="64" />
                     </Size>
                     <Anchors>
                         <Anchor point="TOP">
-                            <Offset><AbsDimension x="0" y="12"/></Offset>
+                            <Offset>
+                                <AbsDimension x="0" y="12" />
+                            </Offset>
                         </Anchor>
                     </Anchors>
                 </Texture>
@@ -247,7 +283,9 @@
                 <FontString name="$parentText" inherits="GameFontNormal" text="ET_NAME_VERSION">
                     <Anchors>
                         <Anchor point="TOP" relativeTo="$parent">
-                            <Offset><AbsDimension x="0" y="-2"/></Offset>
+                            <Offset>
+                                <AbsDimension x="0" y="-2" />
+                            </Offset>
                         </Anchor>
                     </Anchors>
                 </FontString>
@@ -256,7 +294,9 @@
                 <FontString name="EventsTracked" inherits="GameFontNormal" text="ET_EVENTS_TRACKED">
                     <Anchors>
                         <Anchor point="TOPLEFT" relativeTo="$parent">
-                            <Offset><AbsDimension x="18" y="-16"/></Offset>
+                            <Offset>
+                                <AbsDimension x="18" y="-16" />
+                            </Offset>
                         </Anchor>
                     </Anchors>
                 </FontString>
@@ -265,7 +305,9 @@
                 <FontString name="EventCount" inherits="GameFontNormal" text="ET_EVENT_COUNT">
                     <Anchors>
                         <Anchor point="TOPLEFT" relativeTo="EventsTracked" relativePoint="BOTTOMLEFT">
-                            <Offset><AbsDimension x="0" y="-2"/></Offset>
+                            <Offset>
+                                <AbsDimension x="0" y="-2" />
+                            </Offset>
                         </Anchor>
                     </Anchors>
                 </FontString>
@@ -274,7 +316,9 @@
                 <FontString name="EventMemory" inherits="GameFontNormal" text="ET_MEMORY">
                     <Anchors>
                         <Anchor point="TOPLEFT" relativeTo="EventCount" relativePoint="BOTTOMLEFT">
-                            <Offset><AbsDimension x="0" y="-2"/></Offset>
+                            <Offset>
+                                <AbsDimension x="0" y="-2" />
+                            </Offset>
                         </Anchor>
                     </Anchors>
                 </FontString>
@@ -290,22 +334,26 @@
                         <FontString name="CurrentEventName" inherits="GameFontNormalLarge">
                             <Anchors>
                                 <Anchor point="TOP" relativeTo="$parent">
-                                    <Offset><AbsDimension x="0" y="-16"/></Offset>
+                                    <Offset>
+                                        <AbsDimension x="0" y="-16" />
+                                    </Offset>
                                 </Anchor>
                             </Anchors>
                         </FontString>
                     </Layer>
                 </Layers>
                 <Size>
-                    <AbsDimension x="450" y="392"/>
+                    <AbsDimension x="450" y="392" />
                 </Size>
                 <Anchors>
                     <Anchor point="LEFT" relativeTo="$parent" relativePoint="RIGHT">
-                        <Offset><AbsDimension x="-12" y="0"/></Offset>
+                        <Offset>
+                            <AbsDimension x="-12" y="0" />
+                        </Offset>
                     </Anchor>
                 </Anchors>
                 <Anchors>
-                    <Anchor point="CENTER"/>
+                    <Anchor point="CENTER" />
                 </Anchors>
                 <Frames>
                     <!-- Scroll area for argument information -->
@@ -317,7 +365,9 @@
                                 <FontString name="$parentHeading" inherits="GameFontNormal" text="ET_ARGUMENTS_TEXT">
                                     <Anchors>
                                         <Anchor point="TOPLEFT" relativeTo="$parent">
-                                            <Offset><AbsDimension x="4" y="14"/></Offset>
+                                            <Offset>
+                                                <AbsDimension x="4" y="14" />
+                                            </Offset>
                                         </Anchor>
                                     </Anchors>
                                 </FontString>
@@ -326,35 +376,41 @@
                                 <FontString name="EventTimeCurrent" inherits="GameFontNormalSmall" text="ET_TIME_CURRENT">
                                     <Anchors>
                                         <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT">
-                                            <Offset><AbsDimension x="4" y="0"/></Offset>
+                                            <Offset>
+                                                <AbsDimension x="4" y="0" />
+                                            </Offset>
                                         </Anchor>
                                     </Anchors>
                                 </FontString>
                                 <FontString name="EventTimeTotal" inherits="GameFontNormalSmall" text="ET_TIME_TOTAL">
                                     <Anchors>
                                         <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT">
-                                            <Offset><AbsDimension x="-4" y="0"/></Offset>
+                                            <Offset>
+                                                <AbsDimension x="-4" y="0" />
+                                            </Offset>
                                         </Anchor>
                                     </Anchors>
                                 </FontString>
                             </Layer>
                         </Layers>
                         <Size>
-                            <AbsDimension x="419" y="174"/>
+                            <AbsDimension x="419" y="174" />
                         </Size>
                         <Anchors>
                             <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
-                                <Offset><AbsDimension x="15" y="-50"/></Offset>
+                                <Offset>
+                                    <AbsDimension x="15" y="-50" />
+                                </Offset>
                             </Anchor>
                         </Anchors>
                         <Frames>
                             <Frame parentKey="EventArgumentsListFrame" inherits="EventArguments_ScrollableListTemplate">
                                 <KeyValues>
-                                    <KeyValue key="itemTemplate" value="EventArguments_ScrollableListItemTemplate" type="string"/>
+                                    <KeyValue key="itemTemplate" value="EventArguments_ScrollableListItemTemplate" type="string" />
                                 </KeyValues>
                                 <Anchors>
-                                    <Anchor point="TOPLEFT" relativeKey="$parent.Inset"/>
-                                    <Anchor point="BOTTOMRIGHT" relativeKey="$parent.Inset"/>
+                                    <Anchor point="TOPLEFT" relativeKey="$parent.Inset" />
+                                    <Anchor point="BOTTOMRIGHT" relativeKey="$parent.Inset" />
                                 </Anchors>
                             </Frame>
                         </Frames>
@@ -366,12 +422,12 @@
                             <Layer level="BACKGROUND">
                                 <Texture name="$parentTexture">
                                     <Size>
-                                        <AbsDimension x="415" y="118"/>
+                                        <AbsDimension x="415" y="118" />
                                     </Size>
                                     <Anchors>
-                                        <Anchor point="CENTER"/>
+                                        <Anchor point="CENTER" />
                                     </Anchors>
-                                    <Color r="0.1" g="0.1" b="0.1" a="0.5"/>
+                                    <Color r="0.1" g="0.1" b="0.1" a="0.5" />
                                 </Texture>
                             </Layer>
                             <Layer level="ARTWORK">
@@ -379,18 +435,22 @@
                                 <FontString name="$parentHeading" inherits="GameFontNormal">
                                     <Anchors>
                                         <Anchor point="TOPLEFT" relativeTo="$parent">
-                                            <Offset><AbsDimension x="4" y="14"/></Offset>
+                                            <Offset>
+                                                <AbsDimension x="4" y="14" />
+                                            </Offset>
                                         </Anchor>
                                     </Anchors>
                                 </FontString>
                             </Layer>
                         </Layers>
                         <Size>
-                            <AbsDimension x="420" y="122"/>
+                            <AbsDimension x="420" y="122" />
                         </Size>
                         <Anchors>
                             <Anchor point="TOPLEFT" relativeTo="Event_Argument_Frame" relativePoint="BOTTOMLEFT">
-                                <Offset><AbsDimension x="0" y="-35"/></Offset>
+                                <Offset>
+                                    <AbsDimension x="0" y="-35" />
+                                </Offset>
                             </Anchor>
                         </Anchors>
 
@@ -398,51 +458,55 @@
                             <!-- Frame buttons -->
                             <Button name="EventFrame1" inherits="EventFrame_Template">
                                 <Anchors>
-                                    <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" >
+                                    <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
                                         <Offset>
-                                            <AbsDimension x="0" y="-5"/>
+                                            <AbsDimension x="0" y="-5" />
                                         </Offset>
                                     </Anchor>
                                 </Anchors>
                             </Button>
                             <Button name="EventFrame2" inherits="EventFrame_Template">
                                 <Anchors>
-                                    <Anchor point="TOP" relativeTo="EventFrame1" relativePoint="BOTTOM"/>
+                                    <Anchor point="TOP" relativeTo="EventFrame1" relativePoint="BOTTOM" />
                                 </Anchors>
                             </Button>
                             <Button name="EventFrame3" inherits="EventFrame_Template">
                                 <Anchors>
-                                    <Anchor point="TOP" relativeTo="EventFrame2" relativePoint="BOTTOM"/>
+                                    <Anchor point="TOP" relativeTo="EventFrame2" relativePoint="BOTTOM" />
                                 </Anchors>
                             </Button>
                             <Button name="EventFrame4" inherits="EventFrame_Template">
                                 <Anchors>
-                                    <Anchor point="TOP" relativeTo="EventFrame3" relativePoint="BOTTOM"/>
+                                    <Anchor point="TOP" relativeTo="EventFrame3" relativePoint="BOTTOM" />
                                 </Anchors>
                             </Button>
                             <Button name="EventFrame5" inherits="EventFrame_Template">
                                 <Anchors>
-                                    <Anchor point="TOP" relativeTo="EventFrame4" relativePoint="BOTTOM"/>
+                                    <Anchor point="TOP" relativeTo="EventFrame4" relativePoint="BOTTOM" />
                                 </Anchors>
                             </Button>
                             <Button name="EventFrame6" inherits="EventFrame_Template">
                                 <Anchors>
-                                    <Anchor point="TOP" relativeTo="EventFrame5" relativePoint="BOTTOM"/>
+                                    <Anchor point="TOP" relativeTo="EventFrame5" relativePoint="BOTTOM" />
                                 </Anchors>
                             </Button>
                             <Button name="EventFrame7" inherits="EventFrame_Template">
                                 <Anchors>
-                                    <Anchor point="TOP" relativeTo="EventFrame6" relativePoint="BOTTOM"/>
+                                    <Anchor point="TOP" relativeTo="EventFrame6" relativePoint="BOTTOM" />
                                 </Anchors>
                             </Button>
 
                             <ScrollFrame name="EventCallStackScrollFrame" inherits="UIPanelScrollFrameTemplate">
                                 <Anchors>
                                     <Anchor point="TOPLEFT">
-                                        <Offset><AbsDimension x="8" y="-4"/></Offset>
+                                        <Offset>
+                                            <AbsDimension x="8" y="-4" />
+                                        </Offset>
                                     </Anchor>
                                     <Anchor point="BOTTOMRIGHT">
-                                        <Offset><AbsDimension x="-26" y="4"/></Offset>
+                                        <Offset>
+                                            <AbsDimension x="-26" y="4" />
+                                        </Offset>
                                     </Anchor>
                                 </Anchors>
                                 <ScrollChild>
@@ -451,9 +515,9 @@
                                             <AbsDimension x="800" y="16"></AbsDimension>
                                         </Size>
                                         <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" >
+                                            <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
                                                 <Offset>
-                                                    <AbsDimension x="0" y="-5"/>
+                                                    <AbsDimension x="0" y="-5" />
                                                 </Offset>
                                             </Anchor>
                                         </Anchors>
@@ -503,11 +567,13 @@
                     <!-- Scroll buttons -->
                     <ScrollFrame name="EventTracker_Frames" inherits="FauxScrollFrameTemplate" enableMouse="true">
                         <Size>
-                            <AbsDimension x="16" y="111"/>
+                            <AbsDimension x="16" y="111" />
                         </Size>
                         <Anchors>
                             <Anchor point="TOPRIGHT" relativeTo="Event_Frame_Frame" relativePoint="TOPRIGHT">
-                                <Offset><AbsDimension x="-28" y="-6"/></Offset>
+                                <Offset>
+                                    <AbsDimension x="-28" y="-6" />
+                                </Offset>
                             </Anchor>
                         </Anchors>
                         <Scripts>
@@ -550,30 +616,32 @@
                     <Layer level="BACKGROUND">
                         <Texture name="$parentTexture">
                             <Size>
-                                <AbsDimension x="665" y="305"/>
+                                <AbsDimension x="665" y="305" />
                             </Size>
                             <Anchors>
-                                <Anchor point="CENTER"/>
+                                <Anchor point="CENTER" />
                             </Anchors>
-                            <Color r="0.1" g="0.1" b="0.1" a="0.5"/>
+                            <Color r="0.1" g="0.1" b="0.1" a="0.5" />
                         </Texture>
                     </Layer>
                 </Layers>
                 <Size>
-                    <AbsDimension x="670" y="310"/>
+                    <AbsDimension x="670" y="310" />
                 </Size>
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
-                        <Offset><AbsDimension x="15" y="-60"/></Offset>
+                        <Offset>
+                            <AbsDimension x="15" y="-60" />
+                        </Offset>
                     </Anchor>
                 </Anchors>
 
                 <Frames>
                     <Button name="EventItem1" inherits="EventDetail_Template">
                         <Anchors>
-                            <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" >
+                            <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
                                 <Offset>
-                                    <AbsDimension x="0" y="-5"/>
+                                    <AbsDimension x="0" y="-5" />
                                 </Offset>
                             </Anchor>
                         </Anchors>
@@ -582,90 +650,120 @@
                         <Layers>
                             <Layer level="BACKGROUND">
                                 <Texture name="$parentBG">
-                                    <Color r="0.2" g="0.2" b="0.2" a=".5"/>
-                                    <Anchors><Anchor point="TOPLEFT"><Offset x="4" y="0"/></Anchor></Anchors>
-                                    <Size><AbsDimension x="640" y="30"/></Size>
+                                    <Color r="0.2" g="0.2" b="0.2" a=".5" />
+                                    <Anchors>
+                                        <Anchor point="TOPLEFT">
+                                            <Offset x="4" y="0" />
+                                        </Anchor>
+                                    </Anchors>
+                                    <Size>
+                                        <AbsDimension x="640" y="30" />
+                                    </Size>
                                 </Texture>
                             </Layer>
                         </Layers>
                         <Anchors>
-                            <Anchor point="TOP" relativeTo="EventItem1" relativePoint="BOTTOM"/>
+                            <Anchor point="TOP" relativeTo="EventItem1" relativePoint="BOTTOM" />
                         </Anchors>
                     </Button>
                     <Button name="EventItem3" inherits="EventDetail_Template">
                         <Anchors>
-                            <Anchor point="TOP" relativeTo="EventItem2" relativePoint="BOTTOM"/>
+                            <Anchor point="TOP" relativeTo="EventItem2" relativePoint="BOTTOM" />
                         </Anchors>
                     </Button>
                     <Button name="EventItem4" inherits="EventDetail_Template">
                         <Layers>
                             <Layer level="BACKGROUND">
                                 <Texture name="$parentBG">
-                                    <Color r="0.2" g="0.2" b="0.2" a=".5"/>
-                                    <Anchors><Anchor point="TOPLEFT"><Offset x="4" y="0"/></Anchor></Anchors>
-                                    <Size><AbsDimension x="640" y="30"/></Size>
+                                    <Color r="0.2" g="0.2" b="0.2" a=".5" />
+                                    <Anchors>
+                                        <Anchor point="TOPLEFT">
+                                            <Offset x="4" y="0" />
+                                        </Anchor>
+                                    </Anchors>
+                                    <Size>
+                                        <AbsDimension x="640" y="30" />
+                                    </Size>
                                 </Texture>
                             </Layer>
                         </Layers>
                         <Anchors>
-                            <Anchor point="TOP" relativeTo="EventItem3" relativePoint="BOTTOM"/>
+                            <Anchor point="TOP" relativeTo="EventItem3" relativePoint="BOTTOM" />
                         </Anchors>
                     </Button>
                     <Button name="EventItem5" inherits="EventDetail_Template">
                         <Anchors>
-                            <Anchor point="TOP" relativeTo="EventItem4" relativePoint="BOTTOM"/>
+                            <Anchor point="TOP" relativeTo="EventItem4" relativePoint="BOTTOM" />
                         </Anchors>
                     </Button>
                     <Button name="EventItem6" inherits="EventDetail_Template">
                         <Layers>
                             <Layer level="BACKGROUND">
                                 <Texture name="$parentBG">
-                                    <Color r="0.2" g="0.2" b="0.2" a=".5"/>
-                                    <Anchors><Anchor point="TOPLEFT"><Offset x="4" y="0"/></Anchor></Anchors>
-                                    <Size><AbsDimension x="640" y="30"/></Size>
+                                    <Color r="0.2" g="0.2" b="0.2" a=".5" />
+                                    <Anchors>
+                                        <Anchor point="TOPLEFT">
+                                            <Offset x="4" y="0" />
+                                        </Anchor>
+                                    </Anchors>
+                                    <Size>
+                                        <AbsDimension x="640" y="30" />
+                                    </Size>
                                 </Texture>
                             </Layer>
                         </Layers>
                         <Anchors>
-                            <Anchor point="TOP" relativeTo="EventItem5" relativePoint="BOTTOM"/>
+                            <Anchor point="TOP" relativeTo="EventItem5" relativePoint="BOTTOM" />
                         </Anchors>
                     </Button>
                     <Button name="EventItem7" inherits="EventDetail_Template">
                         <Anchors>
-                            <Anchor point="TOP" relativeTo="EventItem6" relativePoint="BOTTOM"/>
+                            <Anchor point="TOP" relativeTo="EventItem6" relativePoint="BOTTOM" />
                         </Anchors>
                     </Button>
                     <Button name="EventItem8" inherits="EventDetail_Template">
                         <Layers>
                             <Layer level="BACKGROUND">
                                 <Texture name="$parentBG">
-                                    <Color r="0.2" g="0.2" b="0.2" a=".5"/>
-                                    <Anchors><Anchor point="TOPLEFT"><Offset x="4" y="0"/></Anchor></Anchors>
-                                    <Size><AbsDimension x="640" y="30"/></Size>
+                                    <Color r="0.2" g="0.2" b="0.2" a=".5" />
+                                    <Anchors>
+                                        <Anchor point="TOPLEFT">
+                                            <Offset x="4" y="0" />
+                                        </Anchor>
+                                    </Anchors>
+                                    <Size>
+                                        <AbsDimension x="640" y="30" />
+                                    </Size>
                                 </Texture>
                             </Layer>
                         </Layers>
                         <Anchors>
-                            <Anchor point="TOP" relativeTo="EventItem7" relativePoint="BOTTOM"/>
+                            <Anchor point="TOP" relativeTo="EventItem7" relativePoint="BOTTOM" />
                         </Anchors>
                     </Button>
                     <Button name="EventItem9" inherits="EventDetail_Template">
                         <Anchors>
-                            <Anchor point="TOP" relativeTo="EventItem8" relativePoint="BOTTOM"/>
+                            <Anchor point="TOP" relativeTo="EventItem8" relativePoint="BOTTOM" />
                         </Anchors>
                     </Button>
                     <Button name="EventItem10" inherits="EventDetail_Template">
                         <Layers>
                             <Layer level="BACKGROUND">
                                 <Texture name="$parentBG">
-                                    <Color r="0.2" g="0.2" b="0.2" a=".5"/>
-                                    <Anchors><Anchor point="TOPLEFT"><Offset x="4" y="0"/></Anchor></Anchors>
-                                    <Size><AbsDimension x="640" y="30"/></Size>
+                                    <Color r="0.2" g="0.2" b="0.2" a=".5" />
+                                    <Anchors>
+                                        <Anchor point="TOPLEFT">
+                                            <Offset x="4" y="0" />
+                                        </Anchor>
+                                    </Anchors>
+                                    <Size>
+                                        <AbsDimension x="640" y="30" />
+                                    </Size>
                                 </Texture>
                             </Layer>
                         </Layers>
                         <Anchors>
-                            <Anchor point="TOP" relativeTo="EventItem9" relativePoint="BOTTOM"/>
+                            <Anchor point="TOP" relativeTo="EventItem9" relativePoint="BOTTOM" />
                         </Anchors>
                     </Button>
                 </Frames>
@@ -702,11 +800,13 @@
             <!-- Scroll buttons -->
             <ScrollFrame name="EventTracker_Details" inherits="FauxScrollFrameTemplate" enableMouse="true">
                 <Size>
-                    <AbsDimension x="16" y="299"/>
+                    <AbsDimension x="16" y="299" />
                 </Size>
                 <Anchors>
                     <Anchor point="TOPRIGHT" relativeTo="$parentBorder" relativePoint="TOPRIGHT">
-                        <Offset><AbsDimension x="-28" y="-6"/></Offset>
+                        <Offset>
+                            <AbsDimension x="-28" y="-6" />
+                        </Offset>
                     </Anchor>
                 </Anchors>
                 <Scripts>
@@ -722,11 +822,13 @@
             <!-- Expand/Collapse button -->
             <Button name="ExpandCollapseButton" inherits="UIPanelButtonTemplate" text="ET_SHOW_DETAILS">
                 <Size>
-                    <AbsDimension x="130" y="21"/>
+                    <AbsDimension x="130" y="21" />
                 </Size>
                 <Anchors>
                     <Anchor point="BOTTOMRIGHT" relativeTo="$parentBorder" relativePoint="TOPRIGHT">
-                        <Offset><AbsDimension x="0" y="5"/></Offset>
+                        <Offset>
+                            <AbsDimension x="0" y="5" />
+                        </Offset>
                     </Anchor>
                 </Anchors>
                 <Scripts>
@@ -739,11 +841,13 @@
             <!-- Close button -->
             <Button name="$parentCloseButton" inherits="UIPanelButtonTemplate" text="ET_CLOSE_BUTTON">
                 <Size>
-                    <AbsDimension x="100" y="21"/>
+                    <AbsDimension x="100" y="21" />
                 </Size>
                 <Anchors>
                     <Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT">
-                        <Offset><AbsDimension x="-15" y="15"/></Offset>
+                        <Offset>
+                            <AbsDimension x="-15" y="15" />
+                        </Offset>
                     </Anchor>
                 </Anchors>
                 <Scripts>
@@ -756,11 +860,13 @@
             <!-- Purge button -->
             <Button name="$parentPurgeButton" inherits="UIPanelButtonTemplate" text="ET_PURGE_BUTTON">
                 <Size>
-                    <AbsDimension x="100" y="21"/>
+                    <AbsDimension x="100" y="21" />
                 </Size>
                 <Anchors>
                     <Anchor point="TOPRIGHT" relativeTo="$parentCloseButton" relativePoint="TOPLEFT">
-                        <Offset><AbsDimension x="0" y="0"/></Offset>
+                        <Offset>
+                            <AbsDimension x="0" y="0" />
+                        </Offset>
                     </Anchor>
                 </Anchors>
                 <Scripts>
@@ -773,11 +879,13 @@
             <!-- OnOff button -->
             <Button name="$parentOnOffButton" inherits="UIPanelButtonTemplate" text="ET_STATE_ONOFF">
                 <Size>
-                    <AbsDimension x="100" y="21"/>
+                    <AbsDimension x="100" y="21" />
                 </Size>
                 <Anchors>
                     <Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT">
-                        <Offset><AbsDimension x="15" y="15"/></Offset>
+                        <Offset>
+                            <AbsDimension x="15" y="15" />
+                        </Offset>
                     </Anchor>
                 </Anchors>
                 <Scripts>
@@ -792,11 +900,13 @@
                     <Layer>
                         <FontString name="TrackingState" inherits="GameFontHighlightSmall" justifyH="LEFT" justifyV="MIDDLE" text="ET_TRACKING">
                             <Size>
-                                <AbsDimension x="100" y="21"/>
+                                <AbsDimension x="100" y="21" />
                             </Size>
                             <Anchors>
                                 <Anchor point="TOPLEFT" relativeTo="$parentOnOffButton" relativePoint="TOPRIGHT">
-                                    <Offset><AbsDimension x="3" y="0"/></Offset>
+                                    <Offset>
+                                        <AbsDimension x="3" y="0" />
+                                    </Offset>
                                 </Anchor>
                             </Anchors>
                         </FontString>
