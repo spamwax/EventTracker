@@ -141,9 +141,10 @@
     EventTracker_ScrollableListMixin = {}
     function EventTracker_ScrollableListMixin:OnLoad()
         self.DataProvider = CreateDataProvider();
-        -- local elementExtent = 16;
+        local elementExtent = 16;
         self.ScrollView = CreateScrollBoxListLinearView();
         self.ScrollView:SetDataProvider(self.DataProvider);
+        self.ScrollView:SetElementExtent(elementExtent);
 
         -- DevTools_Dump(self.itemTemplate)
         local listItem = self.itemTemplate
