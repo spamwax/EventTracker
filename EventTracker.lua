@@ -136,29 +136,31 @@
         -- local elementExtent = 16;
         self.ScrollView = CreateScrollBoxListLinearView();
         self.ScrollView:SetDataProvider(self.DataProvider);
-        -- self.ScrollView:SetElementExtent(elementExtent);
+
+        -- DevTools_Dump(self.itemTemplate)
+        local listItem = self.itemTemplate
         if _G.WOW_PROJECT_ID == _G.WOW_PROJECT_MAINLINE then
-            self.ScrollView:SetElementInitializer("EventArguments_ScrollableListItemTemplate", function(frame, elementData)
+            self.ScrollView:SetElementInitializer(listItem, function(frame, elementData)
                 frame:Init(elementData)
             end);
         else
-            self.ScrollView:SetElementInitializer("Frame", "EventArguments_ScrollableListItemTemplate", function(frame, elementData)
+            self.ScrollView:SetElementInitializer("Frame", listItem, function(frame, elementData)
                 frame:Init(elementData)
             end);
         end
 
-        local padding = 3
-        local s= 1
-        local paddingT = padding;
+        local padding = 5
+        local paddingT = padding+5;
         local paddingB = padding+5;
         local paddingL = padding;
         local paddingR = padding;
-        local spacing = s;
-
-        self.ScrollView:SetPadding(paddingT, paddingB, paddingL, paddingR, spacing);
+        local spacing = 1;
 
         -- The below call is required to hook everything up automatically.
         ScrollUtil.InitScrollBoxListWithScrollBar(self.ScrollBox, self.ScrollBar, self.ScrollView);
+        self.ScrollBox:SetPadding(paddingT, paddingB, paddingL, paddingR, spacing);
+
+        self.ScrollBox:SetClipsChildren(true)
 
         local anchorsWithBar = {
             CreateAnchor("TOPLEFT", self, "TOPLEFT", 4, -4),
