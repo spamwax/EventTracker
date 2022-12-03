@@ -406,17 +406,15 @@
                             </Anchor>
                         </Anchors>
                         <!-- Scrollable frame that uses a data provider to add new "item frames" to itself-->
-                        <Frames>
-                            <Frame parentKey="EventArgumentsListFrame" inherits="EventTracker_ScrollableListTemplate">
-                                <KeyValues>
-                                    <KeyValue key="itemTemplate" value="EventArguments_ScrollableListItemTemplate" type="string" />
-                                </KeyValues>
-                                <Anchors>
-                                    <Anchor point="TOPLEFT" relativeKey="$parent.Inset" />
-                                    <Anchor point="BOTTOMRIGHT" relativeKey="$parent.Inset" />
-                                </Anchors>
-                            </Frame>
-                        </Frames>
+                        <Frame parentKey="EventArgumentsListFrame" inherits="EventTracker_ScrollableListTemplate">
+                            <KeyValues>
+                                <KeyValue key="itemTemplate" value="EventArguments_ScrollableListItemTemplate" type="string" />
+                            </KeyValues>
+                            <Anchors>
+                                <Anchor point="TOPLEFT" relativeKey="$parent.Inset" />
+                                <Anchor point="BOTTOMRIGHT" relativeKey="$parent.Inset" />
+                            </Anchors>
+                        </Frame>
                     </Frame>
 
                     <!-- Scroll area for frame information -->

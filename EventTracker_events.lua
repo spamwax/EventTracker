@@ -12,6 +12,7 @@
         -- "PLAYERREAGENTBANKSLOTS_CHANGED",
         --@debug@
         "COMBAT_LOG_EVENT_UNFILTERED",
+        "CHAT_MSG_COMBAT_XP_GAIN",
         "UNIT_COMBAT",
         --@end-debug
     };
