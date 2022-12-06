@@ -248,7 +248,7 @@
     function EventTracker_ScrollableListMixin:UpdateSelectedHighlight(clickedFrame)
         --@debug@
         print("clickedFrame", clickedFrame:GetElementData().argName or clickedFrame:GetElementData().frameName or clickedFrame:GetElementData().eventName)
-        print("Remembering element number", self.selectedIdx)
+        print("--> Previous selectedIdx was", self.selectedIdx)
         --@end-debug@
         local f = self.ScrollBox:FindFrameByPredicate(function (frame)
             --@debug@
@@ -285,6 +285,7 @@
             self.selectedIdx = clickedFrame:GetOrderIndex()
             clickedFrame.selectedHighlight:Show()
         end
+        print("--> New selectedIdx was", self.selectedIdx)
     end
 
 -- Purge data for specific event
