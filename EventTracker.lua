@@ -175,14 +175,71 @@
     EventFrames_ScrollableListItemMixin = {}
     function EventFrames_ScrollableListItemMixin:Init(elementData)
         self.FrameName:SetText(elementData.frameName)
+        if elementData["clicked"] then
+            self.selectedHighlight:Show()
+        else
+            self.selectedHighlight:Hide()
+        end
+    end
+
+    function EventFrames_ScrollableListItemMixin:OnMouseDown()
+        local parent = Event_Frame_Frame.EventFramesListFrame
+        --@debug@
+        ViragDevTool:AddData(parent.ScrollView, "ClickedFrame")
+        print(self.GetOrderIndex())
+        --end-debug@
+        local t = self.selectedHighlight
+        local dp = parent.ScrollView:GetDataProvider()
+        for idx, elementData in dp:Enumerate() do
+            if idx ~= self.GetOrderIndex() and elementData["clicked"] == true then
+                local frame = parent.ScrollBox:FindFrame(elementData)
+                if frame then frame.selectedHighlight:Hide() end
+                elementData["clicked"] = false
+            end
+        end
+        local c = self.GetElementData().clicked
+        self.GetElementData().clicked = not c
+        if self.GetElementData().clicked then
+            t:Show()
+        else
+            t:Hide()
+        end
+        -- Event_Frame_Frame.EventFramesListFrame.ScrollView:GetDataProvider():TriggerEvent(DataProviderMixin.Event.OnSort);
     end
 
 -- Mixin for event's arguments items
     EventArguments_ScrollableListItemMixin = {}
     function EventArguments_ScrollableListItemMixin:Init(elementData)
-        --DevTools_Dump(elementData)
         self.Argument:SetText(elementData.argName)
         self.ArgumentValue:SetText(elementData.argData)
+        if elementData["clicked"] then
+            self.selectedHighlight:Show()
+        else
+            self.selectedHighlight:Hide()
+        end
+    end
+
+    function EventArguments_ScrollableListItemMixin:OnMouseDown()
+        local parent = Event_Argument_Frame.EventArgumentsListFrame
+        --@debug@
+        ViragDevTool:AddData(parent.ScrollView:GetDataProvider(), "ArgumentsClickedFrame")
+        print(self.GetOrderIndex())
+        --end-debug@
+        local dp = parent.ScrollView:GetDataProvider()
+        for idx, elementData in dp:Enumerate() do
+            if idx ~= self.GetOrderIndex() and elementData["clicked"] == true then
+                local frame = parent.ScrollBox:FindFrame(elementData)
+                if frame then frame.selectedHighlight:Hide() end
+                elementData["clicked"] = false
+                print("clearing idx", idx)
+            end
+        end
+        self.GetElementData().clicked = not self.GetElementData().clicked
+        if self.GetElementData().clicked then
+            self.selectedHighlight:Show()
+        else
+            self.selectedHighlight:Hide()
+        end
     end
 
 
@@ -234,6 +291,7 @@
     function EventTracker_ScrollableListMixin:AppendListItem(elementData)
         self.DataProvider:Insert(elementData)
         elementData["clicked"] = false
+        -- self.ScrollBox:ScrollToBegin(ScrollBoxConstants.NoScrollInterpolation);
     end
 
     function EventTracker_ScrollableListMixin:Clear()
@@ -456,7 +514,7 @@
         for k, _ in pairs(ET_ArgumentInfo) do
             if k > maxIdx then maxIdx = k end
         end
-        --for index, v in pairs(ET_ArgumentInfo) do
+
         for index = 1, maxIdx, 1 do
             argName, argData = EventTracker_GetStrings(ET_CurrentEvent, index, ET_ArgumentInfo[index])
             _G["Event_Argument_Frame"].EventArgumentsListFrame:AppendListItem({argName=argName, argData=argData})

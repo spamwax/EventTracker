@@ -32,7 +32,7 @@
         <Size>
             <AbsDimension y="30" />
         </Size>
-                <Layers>
+        <Layers>
             <Layer level="BACKGROUND">
                 <Texture name="$parentBG" parentKey="detailsBackground" hidden="true">
                     <Color r="0.2" g="0.2" b="0.2" a=".5" />
@@ -55,7 +55,7 @@
                     <Color r="0.8" g="0.8" b="0.1" a="0.8" />
                 </Texture>
             </Layer>
-                    <Layer level="BORDER">
+            <Layer level="BORDER">
                 <Texture file="Interface\BUTTONS\WHITE8X8" alphaMode="ADD" parentKey="selectedHighlight" hidden="true">
                     <Anchors>
                         <Anchor point="TOPLEFT" relativeKey="$parent.detailsBackground"/>
@@ -66,30 +66,30 @@
                     <Color r="0.1" g="1.0" b="0.1" a="0.5" />
                 </Texture>
                 <FontString parentKey="eventName" inherits="GameFontNormalSmall" justifyH="LEFT">
-                            <Anchors>
-                                <Anchor point="TOPLEFT">
-                                    <Offset>
+                    <Anchors>
+                        <Anchor point="TOPLEFT">
+                            <Offset>
                                 <AbsDimension x="8" y="-2" />
-                                    </Offset>
-                                </Anchor>
-                            </Anchors>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
                     <Size x="150" y="12"/>
-                        </FontString>
+                </FontString>
                 <FontString parentKey="eventTimestamp" inherits="GameFontHighlightSmall" justifyH="LEFT">
-                            <Anchors>
+                    <Anchors>
                         <Anchor point="TOPLEFT" relativeKey="$parent.eventName" relativePoint="BOTTOMLEFT" x="0" y="0" />
-                            </Anchors>
+                    </Anchors>
                     <Size x="150" y="12" />
-                        </FontString>
+                </FontString>
                 <FontString parentKey="eventData" setAllPoints="true" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="TOP">
-                            <Anchors>
+                    <Anchors>
                         <Anchor point="LEFT" relativeKey="$parent.eventName" relativePoint="TOPRIGHT" x="5" />
                         <Anchor point="BOTTOMRIGHT" relativeKey="$parent" relativePoint="BOTTOMRIGHT" x="0" />
-                            </Anchors>
+                    </Anchors>
                     <Size y="30" />
-                        </FontString>
-                    </Layer>
-                </Layers>
+                </FontString>
+            </Layer>
+        </Layers>
         <Scripts>
             <OnMouseDown method="OnMouseDown"/>
         </Scripts>
@@ -100,18 +100,17 @@
         <Size y="16" />
         <Layers>
             <Layer level="BORDER">
+                <Texture file="Interface\BUTTONS\WHITE8X8" alphaMode="ADD" parentKey="selectedHighlight" hidden="true">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativeKey="$parent" />
+                        <Anchor point="BOTTOMRIGHT" relativeKey="$parent" />
+                    </Anchors>
+                    <Color r="0.1" g="0.0" b="0.8" a="0.7" />
+                </Texture>
                 <Texture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD" parentKey="Highlight" hidden="true">
                     <Anchors>
-                        <Anchor point="TOPLEFT" relativePoint="TOPLEFT">
-                            <Offset>
-                                <AbsDimension x="-5" y="+3" />
-                            </Offset>
-                        </Anchor>
-                        <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT">
-                            <Offset>
-                                <AbsDimension x="+5" y="0" />
-                            </Offset>
-                        </Anchor>
+                        <Anchor point="TOPLEFT" />
+                        <Anchor point="BOTTOMRIGHT" x="0" />
                     </Anchors>
                     <Color r="0.8" g="0.8" b="0.1" a="0.3" />
                 </Texture>
@@ -119,7 +118,7 @@
                     <Anchors>
                         <Anchor point="TOPLEFT" relativePoint="TOPLEFT">
                             <Offset>
-                                <AbsDimension x="5" y="+3" />
+                                <AbsDimension x="5" y="-1" />
                             </Offset>
                         </Anchor>
                     </Anchors>
@@ -129,11 +128,7 @@
                 </FontString>
                 <FontString inherits="GameFontNormal" justifyH="LEFT" parentKey="ArgumentValue">
                     <Anchors>
-                        <Anchor point="TOPLEFT" relativeKey="$parent.Argument" relativePoint="TOPRIGHT">
-                            <Offset>
-                                <AbsDimension x="5" />
-                            </Offset>
-                        </Anchor>
+                        <Anchor point="TOPLEFT" relativeKey="$parent.Argument" relativePoint="TOPRIGHT" x="5" />
                     </Anchors>
                     <Size>
                         <AbsDimension x="260" y="14" />
@@ -148,6 +143,7 @@
             <OnLeave>
                 self.Highlight:Hide()
             </OnLeave>
+            <OnMouseDown method="OnMouseDown"/>
         </Scripts>
     </Frame>
 
@@ -156,24 +152,27 @@
         <Size y="16" />
         <Layers>
             <Layer level="BORDER">
+                <Texture file="Interface\BUTTONS\WHITE8X8" alphaMode="ADD" parentKey="selectedHighlight" hidden="true">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativeKey="$parent.detailsBackground"/>
+                        <Anchor point="BOTTOMRIGHT" relativeKey="$parent.detailsBackground" relativePoint="BOTTOMRIGHT">
+                            <Offset><AbsDimension x="0"/></Offset>
+                        </Anchor>
+                    </Anchors>
+                    <Color r="0.1" g="0.0" b="0.8" a="0.7" />
+                </Texture>
                 <Texture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD" parentKey="Highlight" hidden="true">
                     <Anchors>
-                        <Anchor point="TOPLEFT" relativePoint="TOPLEFT">
-                            <Offset>
-                                <AbsDimension x="-5" y="+3" />
-                            </Offset>
-                        </Anchor>
-                        <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT">
-                            <Offset>
-                                <AbsDimension x="+5" y="0" />
-                            </Offset>
+                        <Anchor point="TOPLEFT" relativeKey="$parent.detailsBackground"/>
+                        <Anchor point="BOTTOMRIGHT" relativeKey="$parent.detailsBackground" relativePoint="BOTTOMRIGHT">
+                            <Offset><AbsDimension x="0"/></Offset>
                         </Anchor>
                     </Anchors>
                     <Color r="0.8" g="0.8" b="0.1" a="0.3" />
                 </Texture>
                 <FontString inherits="GameFontNormal" justifyH="LEFT" parentKey="FrameName">
                     <Anchors>
-                        <Anchor point="TOPLEFT">
+                        <Anchor point="LEFT">
                             <Offset>
                                 <AbsDimension x="5" y="0" />
                             </Offset>
@@ -189,6 +188,7 @@
             <OnLeave>
                 self.Highlight:Hide()
             </OnLeave>
+            <OnMouseDown method="OnMouseDown"/>
         </Scripts>
     </Frame>
 
@@ -417,15 +417,15 @@
                         </Anchors>
                         <!-- Scrollable frame that uses a data provider to add new "item frames" to itself-->
                         <Frames>
-                        <Frame parentKey="EventArgumentsListFrame" inherits="EventTracker_ScrollableListTemplate">
-                            <KeyValues>
-                                <KeyValue key="itemTemplate" value="EventArguments_ScrollableListItemTemplate" type="string" />
-                            </KeyValues>
-                            <Anchors>
-                                <Anchor point="TOPLEFT" relativeKey="$parent.Inset" />
-                                <Anchor point="BOTTOMRIGHT" relativeKey="$parent.Inset" />
-                            </Anchors>
-                        </Frame>
+                            <Frame parentKey="EventArgumentsListFrame" inherits="EventTracker_ScrollableListTemplate">
+                                <KeyValues>
+                                    <KeyValue key="itemTemplate" value="EventArguments_ScrollableListItemTemplate" type="string" />
+                                </KeyValues>
+                                <Anchors>
+                                    <Anchor point="TOPLEFT" relativeKey="$parent.Inset" />
+                                    <Anchor point="BOTTOMRIGHT" relativeKey="$parent.Inset" />
+                                </Anchors>
+                            </Frame>
                         </Frames>
                     </Frame>
 
