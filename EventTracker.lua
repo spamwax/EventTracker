@@ -126,11 +126,6 @@
 -- Mixin for events' details items
     EventDetails_ScrollableListItemMixin = {}
     function EventDetails_ScrollableListItemMixin:Init(elementData)
-        if elementData["clicked"] then
-            self.selectedHighlight:Show()
-        else
-            self.selectedHighlight:Hide()
-        end
         self.eventName:SetText(elementData.eventName)
         self.eventTimestamp:SetText(elementData.eventTimestamp)
         self.eventData:SetText(elementData.eventDataColored)
@@ -147,63 +142,24 @@
         ViragDevTool:AddData(parent.ScrollView, "EventDetail")
         --end-debug@
         local dp = parent.ScrollView:GetDataProvider()
-        local t = self.selectedHighlight
-        for idx, elementData in dp:Enumerate() do
-            if idx ~= self.GetOrderIndex() and elementData["clicked"] == true then
-                local frame = parent.ScrollBox:FindFrame(elementData)
-                if frame then frame.selectedHighlight:Hide() end
-                elementData["clicked"] = false
-            end
-        end
-        local c = self.GetElementData().clicked
-        self.GetElementData().clicked = not c
-        if self.GetElementData().clicked then
-            t:Show()
-        else
-            t:Hide()
-        end
-        --@debug@
-        ViragDevTool:AddData(self, "self on click")
-        print("GetOrderIndex", self.GetOrderIndex())
-        local t1 = dp:Find(self.GetOrderIndex())
-        ViragDevTool:AddData(t1, "found by dp:Find(idx)")
-        --end-debug@
-        EventTracker_EventOnClick(self, dp, self.GetOrderIndex(), button)
+        parent:UpdateSelectedHighlight(self)
+        EventTracker_EventOnClick(self, dp, button)
     end
 
 -- Mixin for frames list items
     EventFrames_ScrollableListItemMixin = {}
     function EventFrames_ScrollableListItemMixin:Init(elementData)
         self.FrameName:SetText(elementData.frameName)
-        if elementData["clicked"] then
-            self.selectedHighlight:Show()
-        else
-            self.selectedHighlight:Hide()
-        end
     end
 
     function EventFrames_ScrollableListItemMixin:OnMouseDown()
         local parent = Event_Frame_Frame.EventFramesListFrame
         --@debug@
-        ViragDevTool:AddData(parent.ScrollView, "ClickedFrame")
+        ViragDevTool:AddData(self, "FramesClickedFrame")
+        ViragDevTool:AddData(parent, "ParentOfFramesClickedFrame")
         print(self.GetOrderIndex())
         --end-debug@
-        local t = self.selectedHighlight
-        local dp = parent.ScrollView:GetDataProvider()
-        for idx, elementData in dp:Enumerate() do
-            if idx ~= self.GetOrderIndex() and elementData["clicked"] == true then
-                local frame = parent.ScrollBox:FindFrame(elementData)
-                if frame then frame.selectedHighlight:Hide() end
-                elementData["clicked"] = false
-            end
-        end
-        local c = self.GetElementData().clicked
-        self.GetElementData().clicked = not c
-        if self.GetElementData().clicked then
-            t:Show()
-        else
-            t:Hide()
-        end
+        parent:UpdateSelectedHighlight(self)
         -- Event_Frame_Frame.EventFramesListFrame.ScrollView:GetDataProvider():TriggerEvent(DataProviderMixin.Event.OnSort);
     end
 
@@ -212,53 +168,45 @@
     function EventArguments_ScrollableListItemMixin:Init(elementData)
         self.Argument:SetText(elementData.argName)
         self.ArgumentValue:SetText(elementData.argData)
-        if elementData["clicked"] then
-            self.selectedHighlight:Show()
-        else
-            self.selectedHighlight:Hide()
-        end
     end
 
     function EventArguments_ScrollableListItemMixin:OnMouseDown()
         local parent = Event_Argument_Frame.EventArgumentsListFrame
         --@debug@
-        ViragDevTool:AddData(parent.ScrollView:GetDataProvider(), "ArgumentsClickedFrame")
+        ViragDevTool:AddData(self, "ArgumentsClickedFrame")
+        ViragDevTool:AddData(parent, "ParentOfArgumentsClickedFrame")
         print(self.GetOrderIndex())
         --end-debug@
-        local dp = parent.ScrollView:GetDataProvider()
-        for idx, elementData in dp:Enumerate() do
-            if idx ~= self.GetOrderIndex() and elementData["clicked"] == true then
-                local frame = parent.ScrollBox:FindFrame(elementData)
-                if frame then frame.selectedHighlight:Hide() end
-                elementData["clicked"] = false
-                print("clearing idx", idx)
-            end
-        end
-        self.GetElementData().clicked = not self.GetElementData().clicked
-        if self.GetElementData().clicked then
-            self.selectedHighlight:Show()
-        else
-            self.selectedHighlight:Hide()
-        end
+        parent:UpdateSelectedHighlight(self)
     end
 
 
 -- Mixin for scrollable list frame
     EventTracker_ScrollableListMixin = {}
     function EventTracker_ScrollableListMixin:OnLoad()
+        self.selectedIdx = 0
         self.DataProvider = CreateDataProvider();
         local elementExtent = self.itemHeight or 16;
         self.ScrollView = CreateScrollBoxListLinearView();
         self.ScrollView:SetDataProvider(self.DataProvider);
         self.ScrollView:SetElementExtent(elementExtent);
 
+        local getHighlightStatus = function(frame)
+            if frame:GetOrderIndex() ~= self.selectedIdx then
+                frame.selectedHighlight:Hide()
+            else
+                frame.selectedHighlight:Show()
+            end
+        end
         local listItem = self.itemTemplate
         if _G.WOW_PROJECT_ID == _G.WOW_PROJECT_MAINLINE then
             self.ScrollView:SetElementInitializer(listItem, function(frame, elementData)
+                getHighlightStatus(frame)
                 frame:Init(elementData)
             end);
         else
             self.ScrollView:SetElementInitializer("Frame", listItem, function(frame, elementData)
+                getHighlightStatus(frame)
                 frame:Init(elementData)
             end);
         end
@@ -290,12 +238,53 @@
 
     function EventTracker_ScrollableListMixin:AppendListItem(elementData)
         self.DataProvider:Insert(elementData)
-        elementData["clicked"] = false
         -- self.ScrollBox:ScrollToBegin(ScrollBoxConstants.NoScrollInterpolation);
     end
 
     function EventTracker_ScrollableListMixin:Clear()
         self.DataProvider:Flush()
+    end
+
+    function EventTracker_ScrollableListMixin:UpdateSelectedHighlight(clickedFrame)
+        --@debug@
+        print("clickedFrame", clickedFrame:GetElementData().argName or clickedFrame:GetElementData().frameName or clickedFrame:GetElementData().eventName)
+        print("Remembering element number", self.selectedIdx)
+        --@end-debug@
+        local f = self.ScrollBox:FindFrameByPredicate(function (frame)
+            --@debug@
+            print(string.format("Checking frame %s (found = %s)",
+                frame:GetElementData().argName or frame:GetElementData().frameName or clickedFrame:GetElementData().eventName,
+                tostring(frame.selectedHighlight:IsShown()))
+            )
+            --@end-debug@
+            return frame.selectedHighlight:IsShown()
+        end)
+        local shownFlag = clickedFrame.selectedHighlight:IsShown()
+        --@debug@
+        print("frame found", f and "yes" or "no")
+        print(string.format("clickedFrame:IsVisible %s, clickedFrame:IsShow: %s, shownFlag: %s",
+            tostring(clickedFrame.selectedHighlight:IsVisible()), tostring(clickedFrame.selectedHighlight:IsShown()),
+            tostring(shownFlag))
+        )
+        --@end-debug@
+        if f then
+            --@debug@
+            print(string.format("found frame IsVisible %s, IsShown %s", tostring(f.selectedHighlight:IsVisible()), tostring(f.selectedHighlight:IsShown())))
+            --@end-debug@
+            f.selectedHighlight:Hide()
+            if f ~= clickedFrame then
+                self.selectedIdx = clickedFrame:GetOrderIndex()
+                clickedFrame.selectedHighlight:Show()
+            else
+                self.selectedIdx = 0 -- Same item was clicked and turned off
+            end
+        else
+            --@debug@
+            print("turning it on")
+            --@end-debug@
+            self.selectedIdx = clickedFrame:GetOrderIndex()
+            clickedFrame.selectedHighlight:Show()
+        end
     end
 
 -- Purge data for specific event
@@ -574,8 +563,8 @@ local function purgeOneEvent(dataprovider, event)
 end
 
 -- Handle click on event item
-    function EventTracker_EventOnClick(itemFrame, dataprovider, idx, button)
-        local elementData = dataprovider:Find(idx)
+    function EventTracker_EventOnClick(clickedFrame, dataprovider, button)
+        local elementData = clickedFrame:GetElementData()
         --@debug@
         ViragDevTool:AddData(elementData, "elementData")
         --@end-debug

@@ -193,7 +193,7 @@
     </Frame>
 
     <!-- Template frame for scrolling texts -->
-    <Frame name="EventTracker_ScrollableListTemplate" mixin="EventTracker_ScrollableListMixin" virtual="true">
+    <Frame name="EventTracker_ScrollableListTemplate" mixin="EventTracker_ScrollableListMixin" enableMouse="true" virtual="true">
         <Layers>
             <Layer level="BACKGROUND">
                 <Texture name="$parentTexture">
