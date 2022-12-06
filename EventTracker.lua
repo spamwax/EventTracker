@@ -125,6 +125,7 @@
 
 -- Mixin for events' details items
     EventDetails_ScrollableListItemMixin = {}
+    local g_selectionBehavior = nil
     function EventDetails_ScrollableListItemMixin:Init(elementData)
         self.eventName:SetText(elementData.eventName)
         self.eventTimestamp:SetText(elementData.eventTimestamp)
@@ -142,7 +143,8 @@
         ViragDevTool:AddData(parent.ScrollView, "EventDetail")
         --end-debug@
         local dp = parent.ScrollView:GetDataProvider()
-        parent:UpdateSelectedHighlight(self)
+        g_selectionBehavior:ToggleSelect(self);
+        -- parent:UpdateSelectedHighlight(self)
         EventTracker_EventOnClick(self, dp, button)
     end
 
@@ -220,6 +222,18 @@
 
         -- The below call is required to hook everything up automatically.
         ScrollUtil.InitScrollBoxListWithScrollBar(self.ScrollBox, self.ScrollBar, self.ScrollView);
+        g_selectionBehavior = ScrollUtil.AddSelectionBehavior(self.ScrollBox, SelectionBehaviorFlags.Deselectable, SelectionBehaviorFlags.Intrusive);
+        g_selectionBehavior:RegisterCallback(SelectionBehaviorMixin.Event.OnSelectionChanged, function(o, elementData, selected)
+            local button = self.ScrollBox:FindFrame(elementData);
+            if button then
+                if selected then
+                    button.selectedHighlight:Show()
+                else
+                    button.selectedHighlight:Hide()
+                end
+            end
+        end, self);
+
         self.ScrollBox:SetPadding(paddingT, paddingB, paddingL, paddingR, spacing);
 
         self.ScrollBox:SetClipsChildren(true)
