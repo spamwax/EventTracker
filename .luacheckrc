@@ -9,6 +9,7 @@ ignore = {
     "11./SLASH_.*", -- Setting an undefined (Slash handler) global variable
     "11./BINDING_.*", -- Setting an undefined (Keybinding header) global variable
     "212", -- Unused argument
+    "432", -- Shadowing an upvalue argument
     -- "211", -- Unused local variable
     -- "211/L", -- Unused local variable "L"
     -- "211/CL", -- Unused local variable "CL"
@@ -207,6 +208,9 @@ globals = {
     "EventTracker_Scroll_Details",
     "EventTracker_Scroll_Arguments",
     "EventTracker_Scroll_Frames",
+    "EventTrackerFrame_EventsScrollFrame",
+    "Event_Frame_Frame",
+    "Event_Argument_Frame",
     "EventTracker_Purge",
     "EventTracker_OnEvent",
     "EventTracker_WheelScroll",
@@ -220,6 +224,7 @@ globals = {
     "ET_STATE_ONOFF",
     "ET_ARGUMENTS_TEXT",
 
+    "EventDetails_ScrollableListItemMixin",
     "EventArguments_ScrollableListItemMixin",
     "EventFrames_ScrollableListItemMixin",
     "EventArguments_ScrollableListMixin",

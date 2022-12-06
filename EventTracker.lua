@@ -122,6 +122,55 @@
     --       ViragDevTool:AddData(tData, strName)
     --     end
     -- end
+
+-- Mixin for events' details items
+    EventDetails_ScrollableListItemMixin = {}
+    function EventDetails_ScrollableListItemMixin:Init(elementData)
+        if elementData["clicked"] then
+            self.selectedHighlight:Show()
+        else
+            self.selectedHighlight:Hide()
+        end
+        self.eventName:SetText(elementData.eventName)
+        self.eventTimestamp:SetText(elementData.eventTimestamp)
+        self.eventData:SetText(elementData.eventDataColored)
+        if self.GetOrderIndex() % 2 == 0 then
+            self.detailsBackground:Show()
+        else
+            self.detailsBackground:Hide()
+        end
+    end
+
+    function EventDetails_ScrollableListItemMixin:OnMouseDown(button, down)
+        local parent = EventTrackerFrame_EventsScrollFrame.EventDetailsListFrame
+        --@debug@
+        ViragDevTool:AddData(parent.ScrollView, "EventDetail")
+        --end-debug@
+        local dp = parent.ScrollView:GetDataProvider()
+        local t = self.selectedHighlight
+        for idx, elementData in dp:Enumerate() do
+            if idx ~= self.GetOrderIndex() and elementData["clicked"] == true then
+                local frame = parent.ScrollBox:FindFrame(elementData)
+                if frame then frame.selectedHighlight:Hide() end
+                elementData["clicked"] = false
+            end
+        end
+        local c = self.GetElementData().clicked
+        self.GetElementData().clicked = not c
+        if self.GetElementData().clicked then
+            t:Show()
+        else
+            t:Hide()
+        end
+        --@debug@
+        ViragDevTool:AddData(self, "self on click")
+        print("GetOrderIndex", self.GetOrderIndex())
+        local t1 = dp:Find(self.GetOrderIndex())
+        ViragDevTool:AddData(t1, "found by dp:Find(idx)")
+        --end-debug@
+        EventTracker_EventOnClick(self, dp, self.GetOrderIndex(), button)
+    end
+
 -- Mixin for frames list items
     EventFrames_ScrollableListItemMixin = {}
     function EventFrames_ScrollableListItemMixin:Init(elementData)
@@ -141,12 +190,11 @@
     EventTracker_ScrollableListMixin = {}
     function EventTracker_ScrollableListMixin:OnLoad()
         self.DataProvider = CreateDataProvider();
-        local elementExtent = 16;
+        local elementExtent = self.itemHeight or 16;
         self.ScrollView = CreateScrollBoxListLinearView();
         self.ScrollView:SetDataProvider(self.DataProvider);
         self.ScrollView:SetElementExtent(elementExtent);
 
-        -- DevTools_Dump(self.itemTemplate)
         local listItem = self.itemTemplate
         if _G.WOW_PROJECT_ID == _G.WOW_PROJECT_MAINLINE then
             self.ScrollView:SetElementInitializer(listItem, function(frame, elementData)
@@ -158,7 +206,7 @@
             end);
         end
 
-        local padding = 5
+        local padding = 0
         local paddingT = padding+5;
         local paddingB = padding+5;
         local paddingL = padding;
@@ -185,7 +233,7 @@
 
     function EventTracker_ScrollableListMixin:AppendListItem(elementData)
         self.DataProvider:Insert(elementData)
-        self.ScrollBox:ScrollToBegin(ScrollBoxConstants.NoScrollInterpolation);
+        elementData["clicked"] = false
     end
 
     function EventTracker_ScrollableListMixin:Clear()
@@ -202,7 +250,6 @@
 
         -- Redraw items
         for index = length, 1, -1 do
-            --local event, timestamp, data, realevent, time_usage, call_stack = unpack( ET_EventDetail[index] );
             local event = unpack( ET_EventDetail[index] );
             if ( event == purgeEvent ) then
                 tremove( ET_EventDetail, index );
@@ -211,7 +258,7 @@
 
         -- Update UI elements
         EventCallStack:SetText( "" );
-        EventTracker_Scroll_Details();
+        -- EventTracker_Scroll_Details();
         -- Hide the detail window if already showing
         if ( EventDetailFrame:IsVisible() ) then
             EventTracker_Toggle_Details();
@@ -231,14 +278,38 @@
 
         -- Update UI elements
         EventCallStack:SetText( "" );
-        EventTracker_Scroll_Details();
+        -- EventTracker_Scroll_Details();
         -- Hide the detail window if already showing
         if ( EventDetailFrame:IsVisible() ) then
             EventTracker_Toggle_Details();
         end;
         EventTracker_Scroll_Frames();
+        _G["Event_Argument_Frame"].EventArgumentsListFrame:Clear()
+        _G["Event_Frame_Frame"].EventFramesListFrame:Clear()
+        _G["EventTrackerFrame_EventsScrollFrame"].EventDetailsListFrame:Clear()
         EventTracker_UpdateUI();
     end;
+
+    local function EventTracker_AddToDetailsListDataProvider(event, timestamp, data, realevent, time_usage, call_stack)
+        local coloredString
+        local eventData = {}
+        local argName, argData, argInfo
+        eventData["eventName"] = event
+        eventData["eventTimestamp"] = date("%Y-%m-%d %H:%M:%S", timestamp)
+        eventData["eventData"] = data
+        eventData["realevent"] = realevent
+        eventData["time_usage"] = time_usage
+        eventData["call_stack"] = call_stack
+        --DevTools_Dump(data)
+        argInfo = "";
+        for key, value in pairs(data) do
+            argName, argData = EventTracker_GetStrings(event, key, value)
+            argInfo = argInfo .. "," .. argName .. "=" .. argData
+        end
+        coloredString = substr(argInfo, 2)
+        eventData["eventDataColored"] = coloredString
+        _G["EventTrackerFrame_EventsScrollFrame"].EventDetailsListFrame:AppendListItem(eventData)
+    end
 
 -- Add data to the tracking stack (for internal usage)
     local function EventTracker_AddInfo( event, data, realevent, time_usage, call_stack )
@@ -258,11 +329,14 @@
             --@end-debug@
         end
 
-        tinsert( ET_EventDetail, { event, time(), data, realevent, time_usage, call_stack } );
+        local timestamp = time()
+        tinsert( ET_EventDetail, { event, timestamp, data, realevent, time_usage, call_stack } );
+
+        EventTracker_AddToDetailsListDataProvider(event, timestamp, data, realevent, time_usage, call_stack)
 
         -- Update frame
         if(  EventTrackerFrame:IsVisible() ) then
-            EventTracker_Scroll_Details();
+            -- EventTracker_Scroll_Details();
             EventTracker_UpdateUI();
         end;
     end;
@@ -330,21 +404,6 @@
 
         return C_BLUE..argName..C_CLOSE, C_YELLOW..argData..C_CLOSE;
     end;
-
--- Scrool callback for mouse wheel
-    function EventTracker_WheelScroll(frame, delta)
-        local scrolller = _G["EventTracker_Details"]
-        local n = scrolller:GetVerticalScroll() - (delta*15) -- Change multiplication factor to change scroll speed
-        if n < 0 then
-            n = 0
-        elseif n > scrolller:GetVerticalScrollRange() then
-            n = scrolller:GetVerticalScrollRange()
-        end
-        scrolller:SetVerticalScroll(n)
-        n = math.floor((n / 30) + 0.5)
-        FauxScrollFrame_SetOffset(EventTracker_Details, n)
-        EventTracker_Scroll_Details()
-    end
 
 -- Scroll function for event details
     function EventTracker_Scroll_Details()
@@ -442,13 +501,35 @@
         EventTracker_UpdateUI();
     end;
 
+-- Handle purging (remove from list and unregister) one event
+local function purgeOneEvent(dataprovider, event)
+    dataprovider:ForEach(
+        function (elementData)
+            dataprovider:RemoveByPredicate(
+                function(elementData)
+                    return elementData.eventName == event
+                end
+            )
+        end
+    )
+    EventTracker_PurgeEvent(event)
+end
+
 -- Handle click on event item
-    function EventTracker_EventOnClick( self, button, down )
-        local event, _, data, realevent, time_usage, call_stack = unpack( ET_EventDetail[ FauxScrollFrame_GetOffset( EventTracker_Details ) + self:GetID() ] );
+    function EventTracker_EventOnClick(itemFrame, dataprovider, idx, button)
+        local elementData = dataprovider:Find(idx)
+        --@debug@
+        ViragDevTool:AddData(elementData, "elementData")
+        --@end-debug
+        local event = elementData.eventName
+        local data = elementData.eventData
+        local realevent = elementData.realevent
+        local time_usage = elementData.time_usage
+        local call_stack = elementData.call_stack
 
         if ( IsShiftKeyDown() ) then
             EventTracker:UnregisterEvent( event );
-            EventTracker_PurgeEvent( event );
+            purgeOneEvent(dataprovider, event)
             DEFAULT_CHAT_FRAME:AddMessage( ET_REMOVED:format(event) );
         else
             if ( button == "LeftButton" ) then

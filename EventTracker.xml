@@ -27,61 +27,73 @@
         </Scripts>
     </Frame>
 
-    <!-- Template button for event details -->
-    <Button name="EventDetail_Template" virtual="true">
+    <!-- Template button for event details list item -->
+    <Frame name="EventDetails_ScrollableListItemTemplate" virtual="true" mixin="EventDetails_ScrollableListItemMixin">
         <Size>
-            <AbsDimension x="645" y="30" />
+            <AbsDimension y="30" />
         </Size>
-        <Frames>
-            <Frame name="$parentInfo" setAllPoints="true">
                 <Layers>
+            <Layer level="BACKGROUND">
+                <Texture name="$parentBG" parentKey="detailsBackground" hidden="true">
+                    <Color r="0.2" g="0.2" b="0.2" a=".5" />
+                    <Anchors>
+                        <Anchor point="TOPLEFT">
+                            <Offset x="4" y="0" />
+                        </Anchor>
+                    </Anchors>
+                    <Size x="650" y="30"/>
+<!--                         <AbsDimension x="650" y="30" />
+                    </Size> -->
+                </Texture>
+            </Layer>
+            <Layer level="HIGHLIGHT">
+                <Texture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD" hidden="false">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativeKey="$parent.detailsBackground" />
+                        <Anchor point="BOTTOMRIGHT" relativeKey="$parent.detailsBackground" relativePoint="BOTTOMRIGHT" x="0" />
+                    </Anchors>
+                    <Color r="0.8" g="0.8" b="0.1" a="0.8" />
+                </Texture>
+            </Layer>
                     <Layer level="BORDER">
-                        <FontString name="$parentEvent" inherits="GameFontNormalSmall" justifyH="LEFT">
+                <Texture file="Interface\BUTTONS\WHITE8X8" alphaMode="ADD" parentKey="selectedHighlight" hidden="true">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativeKey="$parent.detailsBackground"/>
+                        <Anchor point="BOTTOMRIGHT" relativeKey="$parent.detailsBackground" relativePoint="BOTTOMRIGHT">
+                            <Offset><AbsDimension x="0"/></Offset>
+                        </Anchor>
+                    </Anchors>
+                    <Color r="0.1" g="1.0" b="0.1" a="0.5" />
+                </Texture>
+                <FontString parentKey="eventName" inherits="GameFontNormalSmall" justifyH="LEFT">
                             <Anchors>
                                 <Anchor point="TOPLEFT">
                                     <Offset>
-                                        <AbsDimension x="10" y="-2" />
+                                <AbsDimension x="8" y="-2" />
                                     </Offset>
                                 </Anchor>
                             </Anchors>
-                            <Size>
-                                <AbsDimension x="150" y="12" />
-                            </Size>
+                    <Size x="150" y="12"/>
                         </FontString>
-                        <FontString name="$parentTimestamp" inherits="GameFontHighlightSmall" justifyH="LEFT">
+                <FontString parentKey="eventTimestamp" inherits="GameFontHighlightSmall" justifyH="LEFT">
                             <Anchors>
-                                <Anchor point="TOPLEFT" relativeTo="$parentEvent" relativePoint="BOTTOMLEFT">
-                                    <Offset>
-                                        <AbsDimension x="0" y="0" />
-                                    </Offset>
-                                </Anchor>
+                        <Anchor point="TOPLEFT" relativeKey="$parent.eventName" relativePoint="BOTTOMLEFT" x="0" y="0" />
                             </Anchors>
-                            <Size>
-                                <AbsDimension x="150" y="12" />
-                            </Size>
+                    <Size x="150" y="12" />
                         </FontString>
-                        <FontString name="$parentData" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="TOP">
+                <FontString parentKey="eventData" setAllPoints="true" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="TOP">
                             <Anchors>
-                                <Anchor point="TOPLEFT" relativeTo="$parentEvent" relativePoint="TOPRIGHT">
-                                    <Offset>
-                                        <AbsDimension x="5" y="2" />
-                                    </Offset>
-                                </Anchor>
+                        <Anchor point="LEFT" relativeKey="$parent.eventName" relativePoint="TOPRIGHT" x="5" />
+                        <Anchor point="BOTTOMRIGHT" relativeKey="$parent" relativePoint="BOTTOMRIGHT" x="0" />
                             </Anchors>
-                            <Size>
-                                <AbsDimension x="480" y="30" />
-                            </Size>
+                    <Size y="30" />
                         </FontString>
                     </Layer>
                 </Layers>
-            </Frame>
-        </Frames>
         <Scripts>
-            <OnLoad>self:RegisterForClicks( "LeftButtonUp" );</OnLoad>
-            <OnClick>EventTracker_EventOnClick( self, button, down );</OnClick>
+            <OnMouseDown method="OnMouseDown"/>
         </Scripts>
-        <HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD" />
-    </Button>
+    </Frame>
 
     <!-- Template for "event arguments" list item -->
     <Frame name="EventArguments_ScrollableListItemTemplate" virtual="true" mixin="EventArguments_ScrollableListItemMixin">
@@ -404,6 +416,7 @@
                             </Anchor>
                         </Anchors>
                         <!-- Scrollable frame that uses a data provider to add new "item frames" to itself-->
+                        <Frames>
                         <Frame parentKey="EventArgumentsListFrame" inherits="EventTracker_ScrollableListTemplate">
                             <KeyValues>
                                 <KeyValue key="itemTemplate" value="EventArguments_ScrollableListItemTemplate" type="string" />
@@ -413,6 +426,7 @@
                                 <Anchor point="BOTTOMRIGHT" relativeKey="$parent.Inset" />
                             </Anchors>
                         </Frame>
+                        </Frames>
                     </Frame>
 
                     <!-- Scroll area for frame information -->
@@ -506,7 +520,7 @@
             </Frame>
 
             <!-- Scroll area for event details -->
-            <Frame name="$parentBorder" enableMouse="true" hidden="false" inherits="BackdropTemplate">
+            <Frame name="$parent_EventsScrollFrame" enableMouse="true" hidden="false" inherits="BackdropTemplate">
                 <Layers>
                     <Layer level="BACKGROUND">
                         <Texture name="$parentTexture">
@@ -532,135 +546,17 @@
                 </Anchors>
 
                 <Frames>
-                    <Button name="EventItem1" inherits="EventDetail_Template">
+                    <!-- Scrollable frame that uses a data provider to add new "item frames" to itself-->
+                    <Frame parentKey="EventDetailsListFrame" inherits="EventTracker_ScrollableListTemplate" enableMouse="true">
+                        <KeyValues>
+                            <KeyValue key="itemTemplate" value="EventDetails_ScrollableListItemTemplate" type="string" />
+                            <KeyValue key="itemHeight" value="30" type="number" />
+                        </KeyValues>
                         <Anchors>
-                            <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
-                                <Offset>
-                                    <AbsDimension x="0" y="-5" />
-                                </Offset>
-                            </Anchor>
+                            <Anchor point="TOPLEFT" relativeKey="$parent.Inset" />
+                            <Anchor point="BOTTOMRIGHT" relativeKey="$parent.Inset" />
                         </Anchors>
-                    </Button>
-                    <Button name="EventItem2" inherits="EventDetail_Template">
-                        <Layers>
-                            <Layer level="BACKGROUND">
-                                <Texture name="$parentBG">
-                                    <Color r="0.2" g="0.2" b="0.2" a=".5" />
-                                    <Anchors>
-                                        <Anchor point="TOPLEFT">
-                                            <Offset x="4" y="0" />
-                                        </Anchor>
-                                    </Anchors>
-                                    <Size>
-                                        <AbsDimension x="640" y="30" />
-                                    </Size>
-                                </Texture>
-                            </Layer>
-                        </Layers>
-                        <Anchors>
-                            <Anchor point="TOP" relativeTo="EventItem1" relativePoint="BOTTOM" />
-                        </Anchors>
-                    </Button>
-                    <Button name="EventItem3" inherits="EventDetail_Template">
-                        <Anchors>
-                            <Anchor point="TOP" relativeTo="EventItem2" relativePoint="BOTTOM" />
-                        </Anchors>
-                    </Button>
-                    <Button name="EventItem4" inherits="EventDetail_Template">
-                        <Layers>
-                            <Layer level="BACKGROUND">
-                                <Texture name="$parentBG">
-                                    <Color r="0.2" g="0.2" b="0.2" a=".5" />
-                                    <Anchors>
-                                        <Anchor point="TOPLEFT">
-                                            <Offset x="4" y="0" />
-                                        </Anchor>
-                                    </Anchors>
-                                    <Size>
-                                        <AbsDimension x="640" y="30" />
-                                    </Size>
-                                </Texture>
-                            </Layer>
-                        </Layers>
-                        <Anchors>
-                            <Anchor point="TOP" relativeTo="EventItem3" relativePoint="BOTTOM" />
-                        </Anchors>
-                    </Button>
-                    <Button name="EventItem5" inherits="EventDetail_Template">
-                        <Anchors>
-                            <Anchor point="TOP" relativeTo="EventItem4" relativePoint="BOTTOM" />
-                        </Anchors>
-                    </Button>
-                    <Button name="EventItem6" inherits="EventDetail_Template">
-                        <Layers>
-                            <Layer level="BACKGROUND">
-                                <Texture name="$parentBG">
-                                    <Color r="0.2" g="0.2" b="0.2" a=".5" />
-                                    <Anchors>
-                                        <Anchor point="TOPLEFT">
-                                            <Offset x="4" y="0" />
-                                        </Anchor>
-                                    </Anchors>
-                                    <Size>
-                                        <AbsDimension x="640" y="30" />
-                                    </Size>
-                                </Texture>
-                            </Layer>
-                        </Layers>
-                        <Anchors>
-                            <Anchor point="TOP" relativeTo="EventItem5" relativePoint="BOTTOM" />
-                        </Anchors>
-                    </Button>
-                    <Button name="EventItem7" inherits="EventDetail_Template">
-                        <Anchors>
-                            <Anchor point="TOP" relativeTo="EventItem6" relativePoint="BOTTOM" />
-                        </Anchors>
-                    </Button>
-                    <Button name="EventItem8" inherits="EventDetail_Template">
-                        <Layers>
-                            <Layer level="BACKGROUND">
-                                <Texture name="$parentBG">
-                                    <Color r="0.2" g="0.2" b="0.2" a=".5" />
-                                    <Anchors>
-                                        <Anchor point="TOPLEFT">
-                                            <Offset x="4" y="0" />
-                                        </Anchor>
-                                    </Anchors>
-                                    <Size>
-                                        <AbsDimension x="640" y="30" />
-                                    </Size>
-                                </Texture>
-                            </Layer>
-                        </Layers>
-                        <Anchors>
-                            <Anchor point="TOP" relativeTo="EventItem7" relativePoint="BOTTOM" />
-                        </Anchors>
-                    </Button>
-                    <Button name="EventItem9" inherits="EventDetail_Template">
-                        <Anchors>
-                            <Anchor point="TOP" relativeTo="EventItem8" relativePoint="BOTTOM" />
-                        </Anchors>
-                    </Button>
-                    <Button name="EventItem10" inherits="EventDetail_Template">
-                        <Layers>
-                            <Layer level="BACKGROUND">
-                                <Texture name="$parentBG">
-                                    <Color r="0.2" g="0.2" b="0.2" a=".5" />
-                                    <Anchors>
-                                        <Anchor point="TOPLEFT">
-                                            <Offset x="4" y="0" />
-                                        </Anchor>
-                                    </Anchors>
-                                    <Size>
-                                        <AbsDimension x="640" y="30" />
-                                    </Size>
-                                </Texture>
-                            </Layer>
-                        </Layers>
-                        <Anchors>
-                            <Anchor point="TOP" relativeTo="EventItem9" relativePoint="BOTTOM" />
-                        </Anchors>
-                    </Button>
+                    </Frame>
                 </Frames>
                 <Scripts>
                     <OnLoad inherit="prepend">
@@ -673,35 +569,9 @@
                             insets = { left = 5, right = 5, top = 5, bottom = 5 },
                         };
                         self:SetBackdrop(backdropInfo);
-                        self:EnableMouseWheel(true);
                     </OnLoad>
-                    <OnMouseWheel>
-                        EventTracker_WheelScroll(self, delta);
-                    </OnMouseWheel>
                 </Scripts>
             </Frame>
-
-            <!-- Scroll buttons -->
-            <ScrollFrame name="EventTracker_Details" inherits="FauxScrollFrameTemplate" enableMouse="true">
-                <Size>
-                    <AbsDimension x="16" y="299" />
-                </Size>
-                <Anchors>
-                    <Anchor point="TOPRIGHT" relativeTo="$parentBorder" relativePoint="TOPRIGHT">
-                        <Offset>
-                            <AbsDimension x="-28" y="-6" />
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnVerticalScroll>
-                        FauxScrollFrame_OnVerticalScroll( self, offset, 30, EventTracker_Scroll_Details );
-                    </OnVerticalScroll>
-                    <OnShow>
-                        EventTracker_Scroll_Details()
-                    </OnShow>
-                </Scripts>
-            </ScrollFrame>
 
             <!-- Expand/Collapse button -->
             <Button name="ExpandCollapseButton" inherits="UIPanelButtonTemplate" text="ET_SHOW_DETAILS">
@@ -709,7 +579,7 @@
                     <AbsDimension x="130" y="21" />
                 </Size>
                 <Anchors>
-                    <Anchor point="BOTTOMRIGHT" relativeTo="$parentBorder" relativePoint="TOPRIGHT">
+                    <Anchor point="BOTTOMRIGHT" relativeTo="$parent_EventsScrollFrame" relativePoint="TOPRIGHT">
                         <Offset>
                             <AbsDimension x="0" y="5" />
                         </Offset>
@@ -812,9 +682,6 @@
                 };
                 self:SetBackdrop(backdropInfo);
             </OnLoad>
-            <OnShow>
-                EventTracker_Scroll_Details();
-            </OnShow>
         </Scripts>
     </Frame>
 </Ui>
