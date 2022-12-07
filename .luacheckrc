@@ -18,6 +18,11 @@ ignore = {
     -- "542", -- An empty if branch
 }
 globals = {
+    "std",
+    "max_line_length",
+    "exclude_files",
+    "ignore",
+    "globals",
     -- Lua
     "bit.band",
     "bit",
@@ -114,6 +119,8 @@ globals = {
     "IsControlKeyDown",
 
     "BackdropTemplateMixin",
+    "SelectionBehaviorMixin",
+    "SelectionBehaviorFlags",
     "UIParent",
     "GetTime",
     "GetLocale",
