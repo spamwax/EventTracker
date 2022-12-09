@@ -237,6 +237,7 @@ globals = {
     "EventArguments_ScrollableListMixin",
     "EventTracker_ScrollableListMixin",
     "EventArguments_FrameMixin",
+    "ListItemTemplateMixin",
     "CreateDataProvider",
     "CreateScrollBoxListLinearView",
     "CreateAnchor",

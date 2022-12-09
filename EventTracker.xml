@@ -27,8 +27,21 @@
         </Scripts>
     </Frame>
 
+    <Frame name="ListItemTemplate" virtual="true" mixin="ListItemTemplateMixin">
+        <Scripts>
+            <OnEnter>
+                self.Highlight:Show()
+            </OnEnter>
+            <OnLeave>
+                self.Highlight:Hide()
+            </OnLeave>
+            <OnMouseDown method="OnMouseDown" />
+            <OnLoad method="OnLoad" />
+        </Scripts>
+    </Frame>
+
     <!-- Template button for event details list item -->
-    <Frame name="EventDetails_ScrollableListItemTemplate" virtual="true" mixin="EventDetails_ScrollableListItemMixin">
+    <Frame name="EventDetails_ScrollableListItemTemplate" virtual="true" inherits="ListItemTemplate" mixin="EventDetails_ScrollableListItemMixin">
         <Size>
             <AbsDimension y="30" />
         </Size>
@@ -47,7 +60,7 @@
                 </Texture>
             </Layer>
             <Layer level="HIGHLIGHT">
-                <Texture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD" hidden="false">
+                <Texture file="Interface\QuestFrame\UI-QuestTitleHighlight" parentKey="Highlight" alphaMode="ADD" hidden="false">
                     <Anchors>
                         <Anchor point="TOPLEFT" relativeKey="$parent.detailsBackground" />
                         <Anchor point="BOTTOMRIGHT" relativeKey="$parent.detailsBackground" relativePoint="BOTTOMRIGHT" x="0" />
@@ -96,7 +109,7 @@
     </Frame>
 
     <!-- Template for "event arguments" list item -->
-    <Frame name="EventArguments_ScrollableListItemTemplate" virtual="true" mixin="EventArguments_ScrollableListItemMixin">
+    <Frame name="EventArguments_ScrollableListItemTemplate" virtual="true" inherits="ListItemTemplate" mixin="EventArguments_ScrollableListItemMixin">
         <Size y="16" />
         <Layers>
             <Layer level="BORDER">
@@ -137,18 +150,12 @@
             </Layer>
         </Layers>
         <Scripts>
-            <OnEnter>
-                self.Highlight:Show()
-            </OnEnter>
-            <OnLeave>
-                self.Highlight:Hide()
-            </OnLeave>
             <OnMouseDown method="OnMouseDown"/>
         </Scripts>
     </Frame>
 
     <!-- Template for "event frames" list item -->
-    <Frame name="EventFrames_ScrollableListItemTemplate" virtual="true" mixin="EventFrames_ScrollableListItemMixin">
+    <Frame name="EventFrames_ScrollableListItemTemplate" virtual="true" inherits="ListItemTemplate" mixin="EventFrames_ScrollableListItemMixin">
         <Size y="16" />
         <Layers>
             <Layer level="BORDER">
@@ -182,12 +189,6 @@
             </Layer>
         </Layers>
         <Scripts>
-            <OnEnter>
-                self.Highlight:Show()
-            </OnEnter>
-            <OnLeave>
-                self.Highlight:Hide()
-            </OnLeave>
             <OnMouseDown method="OnMouseDown"/>
         </Scripts>
     </Frame>

@@ -123,9 +123,29 @@
     --     end
     -- end
 
+-- Mixin for base list item
+    ListItemTemplateMixin = {}
+    function ListItemTemplateMixin:OnLoad()
+        self.parent = self:GetParent():GetParent():GetParent()
+    end
+
+    function ListItemTemplateMixin:init(elementData)
+        if elementData.selected then
+            self.selectedHighlight:Show()
+        else
+            self.selectedHighlight:Hide()
+        end
+    end
+    function ListItemTemplateMixin:omd()
+        print("In ListItemTemplateMixin:OnMouseDown")
+        self.parent.g_selectionBehavior:ToggleSelect(self)
+        print(self.GetOrderIndex())
+    end
+
 -- Mixin for events' details items
     EventDetails_ScrollableListItemMixin = {}
     function EventDetails_ScrollableListItemMixin:Init(elementData)
+        self:init(elementData)
         self.eventName:SetText(elementData.eventName)
         self.eventTimestamp:SetText(elementData.eventTimestamp)
         self.eventData:SetText(elementData.eventDataColored)
@@ -137,47 +157,35 @@
     end
 
     function EventDetails_ScrollableListItemMixin:OnMouseDown(button, down)
-        local parent = EventTrackerFrame_EventsScrollFrame.EventDetailsListFrame
         --@debug@
-        ViragDevTool:AddData(parent.ScrollView, "EventDetail")
+        ViragDevTool:AddData(self.parent, "FuckEventDetail")
         --end-debug@
-        local dp = parent.ScrollView:GetDataProvider()
-        parent:UpdateSelectedHighlight(self)
+        self:omd()
+        local dp = self.parent.ScrollView:GetDataProvider()
         EventTracker_EventOnClick(self, dp, button)
     end
 
 -- Mixin for frames list items
     EventFrames_ScrollableListItemMixin = {}
     function EventFrames_ScrollableListItemMixin:Init(elementData)
+        self:init(elementData)
         self.FrameName:SetText(elementData.frameName)
     end
 
     function EventFrames_ScrollableListItemMixin:OnMouseDown()
-        local parent = Event_Frame_Frame.EventFramesListFrame
-        --@debug@
-        ViragDevTool:AddData(self, "FramesClickedFrame")
-        ViragDevTool:AddData(parent, "ParentOfFramesClickedFrame")
-        print(self.GetOrderIndex())
-        --end-debug@
-        parent:UpdateSelectedHighlight(self)
-        -- Event_Frame_Frame.EventFramesListFrame.ScrollView:GetDataProvider():TriggerEvent(DataProviderMixin.Event.OnSort);
+        self:omd()
     end
 
 -- Mixin for event's arguments items
     EventArguments_ScrollableListItemMixin = {}
     function EventArguments_ScrollableListItemMixin:Init(elementData)
+        self:init(elementData)
         self.Argument:SetText(elementData.argName)
         self.ArgumentValue:SetText(elementData.argData)
     end
 
     function EventArguments_ScrollableListItemMixin:OnMouseDown()
-        local parent = Event_Argument_Frame.EventArgumentsListFrame
-        --@debug@
-        ViragDevTool:AddData(self, "ArgumentsClickedFrame")
-        ViragDevTool:AddData(parent, "ParentOfArgumentsClickedFrame")
-        print(self.GetOrderIndex())
-        --end-debug@
-        parent:UpdateSelectedHighlight(self)
+        self:omd()
     end
 
 
@@ -191,36 +199,38 @@
         self.ScrollView:SetDataProvider(self.DataProvider);
         self.ScrollView:SetElementExtent(elementExtent);
 
-        local getHighlightStatus = function(frame)
-            if frame:GetOrderIndex() ~= self.selectedIdx then
-                frame.selectedHighlight:Hide()
-            else
-                frame.selectedHighlight:Show()
-            end
-        end
         local listItem = self.itemTemplate
         if _G.WOW_PROJECT_ID == _G.WOW_PROJECT_MAINLINE then
             self.ScrollView:SetElementInitializer(listItem, function(frame, elementData)
-                getHighlightStatus(frame)
                 frame:Init(elementData)
             end);
         else
             self.ScrollView:SetElementInitializer("Frame", listItem, function(frame, elementData)
-                getHighlightStatus(frame)
                 frame:Init(elementData)
             end);
         end
-
         local padding = 0
         local paddingT = padding+5;
         local paddingB = padding+5;
         local paddingL = padding;
         local paddingR = padding;
         local spacing = 1;
+        self.ScrollView:SetPadding(paddingT, paddingB, paddingL, paddingR, spacing);
 
         -- The below call is required to hook everything up automatically.
         ScrollUtil.InitScrollBoxListWithScrollBar(self.ScrollBox, self.ScrollBar, self.ScrollView);
-        self.ScrollBox:SetPadding(paddingT, paddingB, paddingL, paddingR, spacing);
+
+        self.g_selectionBehavior = ScrollUtil.AddSelectionBehavior(self.ScrollBox, SelectionBehaviorFlags.Deselectable, SelectionBehaviorFlags.Intrusive);
+        self.g_selectionBehavior:RegisterCallback(SelectionBehaviorMixin.Event.OnSelectionChanged, function(o, elementData, selected)
+            local button = self.ScrollBox:FindFrame(elementData);
+            if button then
+                if selected then
+                    button.selectedHighlight:Show()
+                else
+                    button.selectedHighlight:Hide()
+                end
+            end
+        end, self);
 
         self.ScrollBox:SetClipsChildren(true)
 
@@ -566,9 +576,6 @@ end
 -- Handle click on event item
     function EventTracker_EventOnClick(clickedFrame, dataprovider, button)
         local elementData = clickedFrame:GetElementData()
-        --@debug@
-        ViragDevTool:AddData(elementData, "elementData")
-        --@end-debug
         local event = elementData.eventName
         local data = elementData.eventData
         local realevent = elementData.realevent
