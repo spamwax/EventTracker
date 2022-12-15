@@ -3,7 +3,7 @@ max_line_length = false
 exclude_files = {
     "**/libs/**/*.lua",
     "locals",
-    ".luacheckrc"
+    ".luacheckrc",
 }
 ignore = {
     "11./SLASH_.*", -- Setting an undefined (Slash handler) global variable
@@ -256,7 +256,7 @@ globals = {
     "ET_REGISTERED_TEXT",
     "ET_CALLSTACK_TEXT",
 
--- Data arrays
+    -- Data arrays
     "ET_Events",
     "ET_EventDetail",
     "ET_FrameInfo",
@@ -266,14 +266,12 @@ globals = {
     "ET_Data",
     "ET_Static",
 
--- Scroll frame
+    -- Scroll frame
     "ET_DETAILS",
     "ET_ARGUMENTS",
     "ET_FRAMES",
 
-
--- Misc
+    -- Misc
     "ViragPrint",
-    "ViragDevTool"
+    "ViragDevTool",
 }
-

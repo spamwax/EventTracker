@@ -51,6 +51,7 @@ for file in $(git diff --name-only --cached); do
 done
 
 if [[ "$error" == 2 ]]; then
+    echo " "
     echo -e "\033[0;31mThere is at least one typo with @debug@/@end-debug@"
 fi
 exit $error
