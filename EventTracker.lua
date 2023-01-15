@@ -469,7 +469,7 @@ function EventTracker_GetStrings(event, index, value)
 end
 
 -- Scroll function for event details
-function EventTracker_Scroll_Details()
+--[[ function EventTracker_Scroll_Details()
     local length = #ET_EventDetail
     local index, button, argInfo
     local offset
@@ -510,6 +510,7 @@ function EventTracker_Scroll_Details()
         end
     end
 end
+ ]]
 
 -- Scroll function for event arguments
 function EventTracker_Scroll_Arguments()
