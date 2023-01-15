@@ -129,23 +129,15 @@
                 </Texture>
                 <FontString inherits="GameFontNormal" justifyH="LEFT" parentKey="Argument">
                     <Anchors>
-                        <Anchor point="TOPLEFT" relativePoint="TOPLEFT">
-                            <Offset>
-                                <AbsDimension x="5" y="-1" />
-                            </Offset>
-                        </Anchor>
+                        <Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="5" y="-1" />
                     </Anchors>
-                    <Size>
-                        <AbsDimension x="128" y="14" />
-                    </Size>
+                    <Size x="128" y="14" />
                 </FontString>
                 <FontString inherits="GameFontNormal" justifyH="LEFT" parentKey="ArgumentValue">
                     <Anchors>
                         <Anchor point="TOPLEFT" relativeKey="$parent.Argument" relativePoint="TOPRIGHT" x="5" />
                     </Anchors>
-                    <Size>
-                        <AbsDimension x="260" y="14" />
-                    </Size>
+                    <Size x="260" y="14" />
                 </FontString>
             </Layer>
         </Layers>
@@ -179,11 +171,7 @@
                 </Texture>
                 <FontString inherits="GameFontNormal" justifyH="LEFT" parentKey="FrameName">
                     <Anchors>
-                        <Anchor point="LEFT">
-                            <Offset>
-                                <AbsDimension x="5" y="0" />
-                            </Offset>
-                        </Anchor>
+                        <Anchor point="LEFT" x="5" y="0" />
                     </Anchors>
                 </FontString>
             </Layer>
