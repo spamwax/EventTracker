@@ -135,9 +135,11 @@ function ListItemTemplateMixin:init(elementData)
     end
 end
 function ListItemTemplateMixin:omd()
+    --@debug@
     print("In ListItemTemplateMixin:OnMouseDown")
-    self.parent.g_selectionBehavior:ToggleSelect(self)
     print(self.GetOrderIndex())
+    --@end-debug@
+    self.parent.g_selectionBehavior:ToggleSelect(self)
 end
 
 -- Mixin for events' details items
@@ -156,7 +158,7 @@ end
 
 function EventDetails_ScrollableListItemMixin:OnMouseDown(button, down)
     --@debug@
-    ViragDevTool:AddData(self.parent, "FuckEventDetail")
+    --ViragDevTool:AddData(self.parent, "FuckEventDetail")
     --@end-debug@
     self:omd()
     local dp = self.parent.ScrollView:GetDataProvider()
@@ -198,9 +200,9 @@ function EventTracker_ScrollableListMixin:OnLoad()
 
     local listItem = self.itemTemplate
     --if _G.WOW_PROJECT_ID == _G.WOW_PROJECT_MAINLINE then
-        self.ScrollView:SetElementInitializer(listItem, function(frame, elementData)
-            frame:Init(elementData)
-        end)
+    self.ScrollView:SetElementInitializer(listItem, function(frame, elementData)
+        frame:Init(elementData)
+    end)
     --[[else
         self.ScrollView:SetElementInitializer("Frame", listItem, function(frame, elementData)
             frame:Init(elementData)
@@ -320,7 +322,9 @@ function EventTracker_ScrollableListMixin:UpdateSelectedHighlight(clickedFrame)
         self.selectedIdx = clickedFrame:GetOrderIndex()
         clickedFrame.selectedHighlight:Show()
     end
+    --@debug@
     print("--> New selectedIdx was", self.selectedIdx)
+    --@end-debug@
 end
 
 -- Purge data for specific event
