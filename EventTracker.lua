@@ -197,15 +197,15 @@ function EventTracker_ScrollableListMixin:OnLoad()
     self.ScrollView:SetElementExtent(elementExtent)
 
     local listItem = self.itemTemplate
-    if _G.WOW_PROJECT_ID == _G.WOW_PROJECT_MAINLINE then
+    --if _G.WOW_PROJECT_ID == _G.WOW_PROJECT_MAINLINE then
         self.ScrollView:SetElementInitializer(listItem, function(frame, elementData)
             frame:Init(elementData)
         end)
-    else
+    --[[else
         self.ScrollView:SetElementInitializer("Frame", listItem, function(frame, elementData)
             frame:Init(elementData)
         end)
-    end
+    end]]
     local padding = 0
     local paddingT = padding + 5
     local paddingB = padding + 5
