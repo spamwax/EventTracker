@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-field
 --[[ =================================================================
     Description:
         EventTracker is a simple AddOn that informs, by means of a
@@ -154,6 +155,7 @@ function EventDetails_ScrollableListItemMixin:Init(elementData)
     end
 end
 
+---@diagnostic disable-next-line: unused-local
 function EventDetails_ScrollableListItemMixin:OnMouseDown(button, down)
     --@debug@
     ViragDevTool:AddData(self.parent, "FuckEventDetail")
@@ -224,6 +226,7 @@ function EventTracker_ScrollableListMixin:OnLoad()
     )
     self.g_selectionBehavior:RegisterCallback(
         SelectionBehaviorMixin.Event.OnSelectionChanged,
+        ---@diagnostic disable-next-line: unused-local
         function(o, elementData, selected)
             local button = self.ScrollBox:FindFrame(elementData)
             if button then
@@ -434,6 +437,7 @@ function EventTracker_TrackProc(procname, arginfo)
 end
 
 -- Handle events sent to the addon
+---@diagnostic disable-next-line: unused-local
 function EventTracker_OnEvent(self, event, ...)
     local logEvent = true
 
