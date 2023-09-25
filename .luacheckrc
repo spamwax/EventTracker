@@ -236,6 +236,7 @@ globals = {
     "EventFrames_ScrollableListItemMixin",
     "EventArguments_ScrollableListMixin",
     "EventTracker_ScrollableListMixin",
+	"EventCallStack",
     "EventArguments_FrameMixin",
     "ListItemTemplateMixin",
     "CreateDataProvider",

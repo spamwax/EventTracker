@@ -29,7 +29,8 @@ local tinsert, wipe = table.insert, table.wipe
 local lower, upper, substr = string.lower, string.upper, string.sub
 
 -- Function to create array of return values
-function pack(...)
+---@diagnostic disable-next-line: unused-vararg, unused-local
+local function pack(...)
     return arg
 end
 
