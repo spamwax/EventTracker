@@ -13,8 +13,8 @@ C_CLOSE  = "|r"
 -- stylua: ignore end
 
 -- Global strings
-ET_NAME = GetAddOnMetadata("EventTracker", "Title")
-ET_VERSION = GetAddOnMetadata("EventTracker", "Version")
+ET_NAME = C_AddOns.GetAddOnMetadata("EventTracker", "Title")
+ET_VERSION = C_AddOns.GetAddOnMetadata("EventTracker", "Version")
 ET_NAME_VERSION = ET_NAME .. " - " .. ET_VERSION
 ET_STARTUP_MESSAGE = ET_NAME .. " (" .. C_GREEN .. ET_VERSION .. C_CLOSE .. ") loaded."
 ET_NIL = "<" .. C_RED .. "nil" .. C_CLOSE .. ">"
