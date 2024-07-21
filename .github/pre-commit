@@ -36,6 +36,13 @@ if [ "$mainline_addon_version" != "$retail_addon_version" ]; then
     error=1
 fi
 
+if type ggrep >/dev/null 2>&1; then
+    grep_prog=ggrep
+else
+    # shellcheck disable=2209
+    grep_prog=grep
+fi
+
 pat='(\s*--\s+@?(end-)?debug@?)|(\s*--\s*(end-)?debug@?)|(\s*\S+.*--@(end-)?debug@)|(\s*--@(end-)?debug[\s\S]+@)|(--@\s+(end-)?debug@)|(\s*--\s+@(end-)?debug@)|(--\s*@(end-)?debug(?:(((?!@).)+|\b)))$'
 for file in $(git diff --name-only --cached); do
     if [[ $file != *.lua ]]; then
@@ -43,8 +50,8 @@ for file in $(git diff --name-only --cached); do
         continue
     fi
     echo -e "Checking '@debug@' sanity checks for $CYAN$file $NC"
-    if grep -qP "$pat" "$file"; then
-        grep --color=always --with-filename -n -P "$pat" "$file"
+    if "$grep_prog" -qP "$pat" "$file"; then
+        "$grep_prog" --color=always --with-filename -n -P "$pat" "$file"
         echo " "
         error=2
     fi
@@ -54,4 +61,18 @@ if [[ "$error" == 2 ]]; then
     echo " "
     echo -e "\033[0;31mThere is at least one typo with @debug@/@end-debug@"
 fi
+
+luarocks_prog="$HOME"/.luarocks/bin/luacheck
+[ -f "$luarocks_prog" ] || luarocks_prog=luacheck
+
+printf "\nChecking lua lints...\n"
+while IFS= read -rd $'\0' fn; do
+    if "$luarocks_prog" --no-color -q "$fn" >/dev/null; then
+        echo "luacheck: $fn ${GREEN}OK!${NC}"
+    else
+        echo "luacheck: $fn ${RED}FAILED!${NC} Fix the issue before re-committing."
+        error=3
+    fi
+done < <(find  . -type f -name '*.lua' -print0)
+
 exit $error

@@ -153,6 +153,8 @@
         "EventTracker",
         "EventTrackerFrame",
         "EventDetailFrame",
+        "EventCallStack",
+        "Event_Frame_FrameHeading",
         "ExpandCollapseButton",
         "ViragDevTool"
     ]
