@@ -62,6 +62,7 @@ globals = {
 
     -- WoW
     "C_Timer",
+    "C_AddOns",
     "ALL",
     "ACCEPT",
     "ALWAYS",
@@ -236,7 +237,7 @@ globals = {
     "EventFrames_ScrollableListItemMixin",
     "EventArguments_ScrollableListMixin",
     "EventTracker_ScrollableListMixin",
-	"EventCallStack",
+    "EventCallStack",
     "EventArguments_FrameMixin",
     "ListItemTemplateMixin",
     "CreateDataProvider",

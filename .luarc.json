@@ -36,6 +36,7 @@
         "gsub",
         // WoW
         "C_Timer",
+        "C_AddOns",
         "ALL",
         "ACCEPT",
         "ALWAYS",
