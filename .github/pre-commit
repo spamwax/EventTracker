@@ -9,7 +9,7 @@ NC=$'\e[0m'
 
 mainline_toc=$(head -n 1 EventTracker_Mainline.toc | cut -d ' ' -f 3)
 retail_toc=$(head -n 1 EventTracker.toc | cut -d ' ' -f 3)
-wotlk_toc=$(head -n 1 EventTracker_Wrath.toc | cut -d ' ' -f 3)
+wotlk_toc=$(head -n 1 EventTracker_Cata.toc | cut -d ' ' -f 3)
 
 error=0
 
@@ -22,7 +22,7 @@ fi
 
 mainline_addon_version=$(head -n 3 EventTracker_Mainline.toc | tail -n 1 | cut -d ' ' -f 3)
 retail_addon_version=$(head -n 3 EventTracker.toc | tail -n 1 | cut -d ' ' -f 3)
-wotlk_addon_version=$(head -n 3 EventTracker_Wrath.toc | tail -n 1 | cut -d ' ' -f 3)
+wotlk_addon_version=$(head -n 3 EventTracker_Cata.toc | tail -n 1 | cut -d ' ' -f 3)
 
 if [ "$mainline_addon_version" != "$wotlk_addon_version" ]; then
     echo "Addon version mismatch between WOTLK and Retail: $wotlk_addon_version <> $mainline_addon_version"
