@@ -1,7 +1,7 @@
-## Interface: 100002
+## Interface: 110000
 ## Title: EventTracker
 ## Version: @project-version@
-## Author: fmeus (Update by spamwax for SL/DF/WOTLK)
+## Author: fmeus (Update by spamwax for TWW/DF/SL/WOTLK)
 ## Notes: Event Tracker allows you to view detailed information about events/functions
 ## DefaultState: enabled
 ## SavedVariables: ET_Data
